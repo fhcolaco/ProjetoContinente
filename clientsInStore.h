@@ -28,7 +28,13 @@ struct Node *removeClient(struct clientsInStore *clientsInStore, void *client)
     return removeFromList(clientsInStore->clients, client);
 }
 
-void printClients(struct clientsInStore *clientsInStore)
-{
-    printList(clientsInStore->clients, printInt);
-}
+// void printClients(struct clientsInStore *clientsInStore, void (*printData)(void *))
+// {
+//     struct Node *current = clientsInStore->clients->head;
+//     while (current != NULL)
+//     {
+//         printData(current->data->a);
+//         printData(current->data->b);
+//         current = current->next;
+//     }
+// }

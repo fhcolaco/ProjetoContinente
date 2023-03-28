@@ -41,16 +41,6 @@ void addToBackOfList(struct List *list, void *data)
     list->size++;
 }
 
-void printList(struct List *list, void (*printData)(void *))
-{
-    struct Node *current = list->head;
-    while (current != NULL)
-    {
-        printData(current->data);
-        current = current->next;
-    }
-}
-
 struct Node *findMiddle(struct Node *start, struct Node *end)
 {
     if (start == NULL)
