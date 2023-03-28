@@ -16,37 +16,91 @@ struct List
 
 struct List *createList()
 {
-    struct List *list = (struct List *)malloc(sizeof(struct List)); // Aloca memória para a lista
-    list->head = NULL;                                              // Inicializa a cabeça da lista como NULL
-    list->tail = NULL;                                              // Inicializa a fim da lista como NULL
-    list->size = 0;                                                 // Inicializa o tamanho da lista como 0
+    struct List *list = (struct List *)malloc(sizeof(struct List));
+    list->head = NULL;
+    list->tail = NULL;
+    list->size = 0;
     return list;
 }
 
 void addToBackOfList(struct List *list, void *data)
 {
-    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node)); // Aloca memória para o nó
-    new_node->data = data;                                              // Atribui o dado ao nó
-    new_node->next = NULL;                                              // Inicializa o próximo nó como NULL
-    if (list->head == NULL)                                             // Se a cabeça da lista for NULL, então a lista está vazia. Logo, o nó será a cabeça e o fim da lista
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = NULL;
+    if (list->head == NULL)
     {
         list->head = new_node;
         list->tail = new_node;
     }
-    else // Se a cabeça da lista não for NULL, então a lista não está vazia. Logo, o nó será adicionado ao fim da lista
+    else
     {
         list->tail->next = new_node;
         list->tail = new_node;
     }
-    list->size++; // Adiciona 1 ao tamanho da lista
+    list->size++;
 }
 
 void printList(struct List *list, void (*printData)(void *))
 {
-    struct Node *current = list->head; // Inicializa o nó atual como a cabeça da lista
-    while (current != NULL)            // Enquanto o nó atual não for NULL, então a lista não acabou
+    struct Node *current = list->head;
+    while (current != NULL)
     {
-        printData(current->data); // Imprime o dado do nó atual
-        current = current->next;  // Atualiza o nó atual para o próximo nó
+        printData(current->data);
+        current = current->next;
     }
+}
+
+struct Node *findMiddle(struct Node *start, struct Node *end)
+{
+    if (start == NULL)
+        return NULL;
+    struct Node *slow = start;
+    struct Node *fast = start->next;
+    while (fast != end)
+    {
+        fast = fast->next;
+        if (fast != end)
+        {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+    return slow;
+}
+
+struct Node *findInList(struct List *list, void *data)
+{
+    struct Node *start = list->head;
+    struct Node *end = list->tail;
+    do
+    {
+        struct Node *middle = findMiddle(start, end);
+        if (middle == NULL)
+            return NULL;
+        if (middle->data == data)
+            return middle;
+        else if (middle->data > data)
+            end = middle->next;
+        else
+            start = middle->next;
+    } while (end != start);
+    return NULL;
+}
+
+struct Node *removeFromList(struct List *list, void *data)
+{
+    struct Node *found = findInList(list, data);
+    if (found != NULL)
+    {
+        struct Node *current = list->head;
+        while (current->next != found)
+        {
+            current = current->next;
+        }
+        current->next = found->next;
+        list->size--;
+        return found;
+    }
+    return NULL;
 }

@@ -1,17 +1,24 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "genericList.h"
-#include "functions.h"
+#include "clientsInStore.h"
 
-int main(void)
+void main(void)
 {
-    struct List *list = createList();
-    int array[5] = {1, 2, 3, 4, 5};
+    struct clientsInStore *clientsInStore = createClientsInStore();
+    int test[5] = {1, 2, 3, 4, 5};
     for (int i = 0; i < 5; i++)
     {
-        addToBackOfList(list, &array[i]);
+        addClient(clientsInStore, &test[i]);
     }
-    printList(list, printInt);
-
-    return 0;
+    printf("OG Clients in store: ");
+    printClients(clientsInStore);
+    struct Node *removedValue = removeClient(clientsInStore, &test[2]);
+    if (removedValue != NULL)
+    {
+        printf("\nRemoved value: %d", *(int *)removedValue->data);
+    }
+    else
+    {
+        printf("\nValue not found");
+    }
+    printf("\nLast Gen Clients in store: ");
+    printClients(clientsInStore);
 }
