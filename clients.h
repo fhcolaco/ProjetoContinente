@@ -1,5 +1,9 @@
 #include "genericList.h"
 #include <string.h>
+#include <time.h>
+
+#define MAX_PRODUCTS_PER_CLIENT 9;
+#define MAX_PRODUCTS_IN_FILE 9662;
 
 struct Client
 {
@@ -8,18 +12,18 @@ struct Client
     struct List *shoppingList;
 };
 
-struct Product
+typedef struct product
 {
     int id;
-    char description[50];
+    char description[100];
     float price;
     float timeInStore;
     float timeInCheckOut;
-};
+} PRODUCT;
 
-struct Product *createProduct(int id, char *description, float price, float timeInStore, float timeInCheckOut)
+PRODUCT *createProduct(int id, char *description, float price, float timeInStore, float timeInCheckOut)
 {
-    struct Product *product = (struct Product *)malloc(sizeof(struct Product));
+    PRODUCT *product = (PRODUCT *)malloc(sizeof(PRODUCT));
     product->id = id;
     strcpy(product->description, description);
     product->price = price;
@@ -27,41 +31,89 @@ struct Product *createProduct(int id, char *description, float price, float time
     product->timeInCheckOut = timeInCheckOut;
     return product;
 }
-struct Product *generateRandomProduct()
+void *generateRandomProductList(struct Client *client)
 {
-    FILE *products;
-    products = fopen("produtosOriginal.txt", "r");
-    if (products == NULL)
+    char ch;
+    srand(time(0));
+    unsigned int numberOfProducts = rand() % MAX_PRODUCTS_PER_CLIENT;
+    printf("Number of products: %d\n", numberOfProducts + 1);
+    int id;
+    char description[100];
+    float price;
+    float timeInStore;
+    float timeInCheckOut;
+    unsigned int random;
+    for (int z = 1; z <= numberOfProducts + 1; z++)
     {
-        printf("Error opening file");
-        exit(1);
-    }
-    else
-    {
-        char ch;
-        while (!feof(products))
+        id = 0;
+        description[0] = 0;
+        price = 0;
+        timeInStore = 0;
+        timeInCheckOut = 0;
+        random = rand() % MAX_PRODUCTS_IN_FILE;
+        printf("Random number: %d\n", random);
+        FILE *products;
+        products = fopen("produtosOriginal.txt", "r");
+        if (products == NULL)
         {
-            int id;
-            char description[50];
-            float price;
-            float timeInStore;
-            float timeInCheckOut;
-            ch = fgetc(products);
-            fscanf(products, "%d %s %f %f %f", &id, description, &price, &timeInStore, &timeInCheckOut);
-            struct Product *product = createProduct(id, description, price, timeInStore, timeInCheckOut);
-            return product;
+            printf("Error opening file");
+            exit(1);
         }
+        else
+        {
+            ch = '\0';
+            for (int j = 0; j < random - 1; j++) // Choosing a random product
+            {
+                ch = fgetc(products);
+                while (ch != '\n')
+                {
+                    ch = fgetc(products);
+                }
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                char aux[50] = "\0";
+                ch = fgetc(products);
+                while (ch != '\t')
+                {
+                    strncat(aux, &ch, 1);
+                    ch = fgetc(products);
+                }
+                if (i == 0)
+                {
+                    id = atoi(aux);
+                }
+                else if (i == 1)
+                {
+                    strcpy(description, aux);
+                }
+                else if (i == 2)
+                {
+                    price = atof(aux);
+                }
+                else if (i == 3)
+                {
+                    timeInStore = atof(aux);
+                }
+                else if (i == 4)
+                {
+                    timeInCheckOut = atof(aux);
+                }
+            }
+            PRODUCT *product = createProduct(id, description, price, timeInStore, timeInCheckOut);
+            if (addToBackOfList(client->shoppingList, product) != 1)
+            {
+                printf("Error adding product to list");
+            }
+        }
+        fclose(products);
     }
 }
 
 void createShoppingList(struct Client *client)
 {
     client->shoppingList = createList();
-    // addToBackOfList(client->shoppingList, generateRandomProduct());
-    // addToBackOfList(client->shoppingList, generateRandomProduct());
-    addToBackOfList(client->shoppingList, createProduct(1, "Apple", 1.5, 0.5, 0.5));
-    addToBackOfList(client->shoppingList, createProduct(2, "Banana", 1.5, 0.5, 0.5));
-    addToBackOfList(client->shoppingList, createProduct(3, "Orange", 1.5, 0.5, 0.5));
+    generateRandomProductList(client);
 }
 
 struct Client *createClient(int id, char *name)
@@ -73,6 +125,11 @@ struct Client *createClient(int id, char *name)
     return client;
 }
 
+void printClient(struct Client *client)
+{
+    printf("Client %d: %s\n", client->id, client->name);
+}
+
 void printShoppingList(struct Client *client)
 {
     printf("Shopping list:\n");
@@ -80,13 +137,9 @@ void printShoppingList(struct Client *client)
     struct Node *current = client->shoppingList->head;
     while (current != NULL)
     {
-        printf("\t%d\t%s\t\t%f\t%f\t%f\n", ((struct Product *)current->data)->id, ((struct Product *)current->data)->description, ((struct Product *)current->data)->price, ((struct Product *)current->data)->timeInStore, ((struct Product *)current->data)->timeInCheckOut);
+        printf("\t%d\t%s\t%f\t%f\t%f\n", ((PRODUCT *)current->data)->id, ((PRODUCT *)current->data)->description, ((PRODUCT *)current->data)->price, ((PRODUCT *)current->data)->timeInStore, ((PRODUCT *)current->data)->timeInCheckOut);
         current = current->next;
     }
-}
-void printClient(struct Client *client)
-{
-    printf("Client %d: %s\n", client->id, client->name);
 }
 
 float calculateTotalTimeInStore(struct Client *client)
@@ -99,7 +152,7 @@ float calculateTotalTimeInStore(struct Client *client)
     }
     while (current != NULL)
     {
-        totalTime += ((struct Product *)current->data)->timeInStore;
+        totalTime += ((PRODUCT *)current->data)->timeInStore;
         current = current->next;
     }
     return totalTime;
@@ -115,7 +168,7 @@ float calculateTotalTimeInCheckOut(struct Client *client)
     }
     while (current != NULL)
     {
-        totalTime = ((struct Product *)current->data)->timeInCheckOut;
+        totalTime = ((PRODUCT *)current->data)->timeInCheckOut;
         current = current->next;
     }
     return totalTime;

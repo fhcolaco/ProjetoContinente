@@ -23,7 +23,7 @@ struct List *createList()
     return list;
 }
 
-void addToBackOfList(struct List *list, void *data)
+int addToBackOfList(struct List *list, void *data)
 {
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
     new_node->data = data;
@@ -39,6 +39,7 @@ void addToBackOfList(struct List *list, void *data)
         list->tail = new_node;
     }
     list->size++;
+    return 1;
 }
 
 struct Node *findMiddle(struct Node *start, struct Node *end)
