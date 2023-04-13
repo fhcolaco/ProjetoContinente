@@ -1,13 +1,46 @@
 #include "clients.h"
 
+void *showClientByID(struct List *list, int n)
+{
+    for (int i = 1; i < n; i++)
+    {
+        list->head = list->head->next;
+    }
+    struct Client *client = (struct Client *)list->head->data;
+    printClient(client);
+    printShoppingList(client);
+}
+
 int main(void)
 {
     // int choice;
     printf("Please wait while loading data...\n");
-    struct Client *client = createClient(1000, "John Snow");
+    struct List *productList = createProductList();
+    struct List *clientList = createClientList(productList);
     // // LOAD DATA
     printf("Data loaded successfully!\n");
-    // // else DATA NOT LOADED
+    printf("Exitem %d produtos na Lista.\n", productList->size);
+    printf("Exitem %d clientes na Lista.\n", clientList->size);
+    int n;
+    for (int i = 0; i < 3; i++)
+    {
+        struct List *list2 = copyList(clientList);
+        printf("Qual é o cliente que pretende ver: (1-10000)\nEscolha: ");
+        scanf("%d", &n);
+        showClientByID(list2, n);
+        free(list2);
+    }
+    // printf("A mostrar um cliente aleatorio:\n");
+    // int random = rand() % clientList->size;
+    // for (int i = 0; i < random; i++)
+    // {
+    //     clientList->head = clientList->head->next;
+    // }
+    // struct Client *client = (struct Client *)clientList->head->data;
+    // printClient(client);
+    // printShoppingList(client);
+    // // struct Client *client = createClient(1000, "Joao");
+
     // do
     // {
     //     printf("==========MENU==========\n");
@@ -28,10 +61,12 @@ int main(void)
     //         break;
     //     case 3:
     // printf("Showing data...\n");
-    printClient(client);
-    printShoppingList(client);
-    printf("\ntimeAccInStore: %f\n", calculateTotalTimeInStore(client));
-    printf("timeAccInCheckOut: %f\n", calculateTotalTimeInCheckOut(client));
+
+    // printClient(client);
+    // printShoppingList(client);
+    // printf("\ntimeAccInStore: %f\n", calculateTotalTimeInStore(client));
+    // printf("timeAccInCheckOut: %f\n", calculateTotalTimeInCheckOut(client));
+
     //         break;
     //     case 4:
     //         printf("Exiting program...\n");
