@@ -62,7 +62,7 @@ void createShoppingList(struct Client *client, struct List *productList)
 }
 CLIENT *createClient(int id, char *name, struct List *productList)
 {
-    struct Client *client = (struct Client *)malloc(sizeof(struct Client));
+    CLIENT *client = (struct Client *)malloc(sizeof(struct Client));
     client->id = id;
     strcpy(client->name, name);
     createShoppingList(client, productList);
