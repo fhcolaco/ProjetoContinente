@@ -9,8 +9,6 @@ typedef struct Employee
     bool isWorking;
 } EMPLOYEE;
 
-
-
 EMPLOYEE *createEmployee(int numMec, char *name)
 {
     EMPLOYEE *employee = (EMPLOYEE *)malloc(sizeof(EMPLOYEE));
@@ -20,48 +18,49 @@ EMPLOYEE *createEmployee(int numMec, char *name)
     return employee;
 }
 
-struct List *createEmployeeList(){
-    struct List *employeeList = createList();
-FILE *file = fopen("funcionariosOriginal.txt", "r");
-if (file == NULL)
+struct List *createEmployeeList()
 {
-    printf("Error opening file!\n");
-    exit(1);
-}else {
-    printf("Creating employee list...\n");
-    char ch;
-    int numMec;
-    char name[40];
-    while (ch != EOF)
+    struct List *employeeList = createList();
+    FILE *file;
+    file = fopen("funcionariosOriginal.txt", "r");
+    if (file == NULL)
     {
-        name[0] = 0;
-        ch = '\0';
-        for (int i = 0; i < 2; i++)
-        {
-            char aux[40] = "\0";
-            ch = fgetc(file);
-            while (ch != '\t' && ch != '\n' && ch != EOF)
-            {
-                strncat(aux, &ch, 1);
-                ch = fgetc(file);
-            }
-            if (i == 0)
-            {
-                numMec = atoi(aux);
-            }
-            if (i == 1)
-            {
-                strcpy(name, aux);
-            }
-            free(aux);
-        }
-            addToBackOfList(employeeList, createEmployee(numMec, name));
+        printf("Error opening file!\n");
+        exit(1);
     }
-}
-
+    else
+    {
+        printf("Creating employee list...\n");
+        char ch;
+        int numMec;
+        char name[40];
+        while (ch != EOF)
+        {
+            name[0] = 0;
+            ch = '\0';
+            for (int i = 0; i < 2; i++)
+            {
+                char aux[40] = "\0";
+                ch = fgetc(file);
+                while (ch != '\t' && ch != '\n' && ch != EOF)
+                {
+                    strncat(aux, &ch, 1);
+                    ch = fgetc(file);
+                }
+                if (i == 0)
+                {
+                    numMec = atoi(aux);
+                }
+                if (i == 1)
+                {
+                    strcpy(name, aux);
+                }
+                free(aux);
+            }
+            addToBackOfList(employeeList, createEmployee(numMec, name));
+        }
+    }
+    printf("Employee list created!\n");
+    fclose(file);
     return employeeList;
 }
-
-
-
-
