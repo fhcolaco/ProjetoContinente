@@ -1,6 +1,5 @@
-#include "genericList.h";
-#include <string.h>;
-#include <time.h>;
+#include <string.h>
+#include <time.h>
 
 typedef struct Employee
 {
@@ -55,7 +54,6 @@ struct List *createEmployeeList()
                 {
                     strcpy(name, aux);
                 }
-                free(aux);
             }
             addToBackOfList(employeeList, createEmployee(numMec, name));
         }

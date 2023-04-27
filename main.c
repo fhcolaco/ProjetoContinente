@@ -1,4 +1,6 @@
+#include "genericList.h"
 #include "clients.h"
+#include "employee.h"
 
 void *showClientByID(struct List *list, int n)
 {
@@ -17,19 +19,22 @@ int main(void)
     printf("Please wait while loading data...\n");
     struct List *productList = createProductList();
     struct List *clientList = createClientList(productList);
+    struct List *employeeList = createEmployeeList();
     // // LOAD DATA
-    printf("Data loaded successfully!\n");
+    printf("\n\33[0;32mData loaded successfully!\n\33[0;97m");
     printf("Exitem %d produtos na Lista.\n", productList->size);
     printf("Exitem %d clientes na Lista.\n", clientList->size);
-    int n;
-    for (int i = 0; i < 3; i++)
-    {
-        struct List *list2 = copyList(clientList);
-        printf("Qual é o cliente que pretende ver: (1-10000)\nEscolha: ");
-        scanf("%d", &n);
-        showClientByID(list2, n);
-        free(list2);
-    }
+    printf("Exitem %d empregados na Lista.\n", employeeList->size);
+
+    // int n;
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     struct List *list2 = copyList(clientList);
+    //     printf("Qual é o cliente que pretende ver: (1-10000)\nEscolha: ");
+    //     scanf("%d", &n);
+    //     showClientByID(list2, n);
+    //     free(list2);
+    // }
     // printf("A mostrar um cliente aleatorio:\n");
     // int random = rand() % clientList->size;
     // for (int i = 0; i < random; i++)

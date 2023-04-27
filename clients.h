@@ -1,6 +1,6 @@
-#include "genericList.h"
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
 
 #define MAX_PRODUCTS_PER_CLIENT 9;
 #define MAX_PRODUCTS_IN_FILE 9662;
