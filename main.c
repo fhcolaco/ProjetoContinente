@@ -26,6 +26,21 @@ int main(void)
     printf("Exitem %d clientes na Lista.\n", clientList->size);
     printf("Exitem %d empregados na Lista.\n", employeeList->size);
 
+    // show employee name and nummec
+    // for (int i = 0; i < 2; i++)
+    // {
+    //     struct List *list2 = copyList(employeeList);
+    //     printf("\n\n\tROUND %d\n\n", i + 1);
+    //     for (int i = 0; i < employeeList->size; i++)
+    //     {
+    //         struct Employee *employee = (struct Employee *)list2->head->data;
+    //         printf("Name: %s\n", employee->name);
+    //         printf("NumMec: %d\n", employee->numMec);
+    //         list2->head = list2->head->next;
+    //     }
+    //     free(list2);
+    // }
+
     // int n;
     // for (int i = 0; i < 3; i++)
     // {
