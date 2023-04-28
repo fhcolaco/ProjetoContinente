@@ -58,7 +58,7 @@ struct List *createEmployeeList()
             addToBackOfList(employeeList, createEmployee(numMec, name));
         }
     }
-    printf("Employee list created!\n");
+    printf("\33[0;32mEmployee list created!\n\33[0;97m");
     fclose(file);
     return employeeList;
 }

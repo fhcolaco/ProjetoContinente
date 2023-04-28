@@ -1,6 +1,8 @@
 #include "genericList.h"
+#include "functions.h"
 #include "clients.h"
 #include "employee.h"
+#include "eventHorizon.h"
 
 void *showClientByID(struct List *list, int n)
 {
@@ -20,11 +22,27 @@ int main(void)
     struct List *productList = createProductList();
     struct List *clientList = createClientList(productList);
     struct List *employeeList = createEmployeeList();
+    struct List *eventHorizon = createEventHorizon(clientList);
     // // LOAD DATA
     printf("\n\33[0;32mData loaded successfully!\n\33[0;97m");
     printf("Exitem %d produtos na Lista.\n", productList->size);
     printf("Exitem %d clientes na Lista.\n", clientList->size);
     printf("Exitem %d empregados na Lista.\n", employeeList->size);
+    printf("Exitem %d eventos na Lista.\n", eventHorizon->size);
+
+    struct List *list2 = copyList(eventHorizon);
+    struct Node *current = (struct Node *)list2->head;
+    while (current != NULL)
+    {
+        struct Event *event = (struct Event *)current->data;
+        printf("Event: %d\n", event->type);
+        printf("Time: %d\n", event->time);
+        printf("Client: %d\n\n", event->client->id);
+        current = current->next;
+        free(event);
+    }
+    free(current);
+    free(list2);
 
     // show employee name and nummec
     // for (int i = 0; i < 2; i++)

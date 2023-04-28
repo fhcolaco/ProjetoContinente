@@ -23,6 +23,43 @@ struct List *createList()
     return list;
 }
 
+void addToMiddle(struct List *list, void *data, int (*compare)(void *, void *))
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    int i = 0;
+    new_node->data = data;
+    new_node->next = NULL;
+    if (list->head == NULL)
+    {
+        list->head = new_node;
+        list->tail = new_node;
+    }
+    else
+    {
+        struct Node *current = list->head;
+        struct Node *previous = NULL;
+        while (current != NULL && compare(current->data, data) == 0)
+        {
+            previous = current;
+            current = current->next;
+            i++;
+        }
+        if (previous == NULL)
+        {
+            printf("FIM DA LISTA i = %d\n", i);
+            new_node->next = list->head;
+            list->head = new_node;
+        }
+        else
+        {
+            printf("MEIO DA LISTA i = %d\n", i);
+            previous->next = new_node;
+            new_node->next = current;
+        }
+    }
+    list->size++;
+}
+
 void addToBackOfList(struct List *list, void *data)
 {
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));

@@ -36,7 +36,7 @@ void *generateRandomProductList(struct Client *client, struct List *productList)
 {
     char ch;
     srand(time(0));
-    unsigned int numberOfProducts = rand() % MAX_PRODUCTS_PER_CLIENT;
+    unsigned int numberOfProducts = MAX_PRODUCTS_PER_CLIENT;
     int id;
     char description[100];
     float price;
@@ -126,7 +126,7 @@ struct List *createProductList()
             addToBackOfList(ListaProdutos, createProduct(id, description, price, timeInStore, timeInCheckOut));
         }
     }
-    printf("Product list created!\n");
+    printf("\33[0;32mProduct list created!\n\33[0;97m");
     fclose(products);
     return ListaProdutos;
 }
@@ -172,7 +172,7 @@ struct List *createClientList(struct List *productList)
             addToBackOfList(clientList, createClient(id, name, productList));
         }
     }
-    printf("Client list created!\n");
+    printf("\33[0;32mClient list created!\n\33[0;97m");
     fclose(clients);
     return clientList;
 }

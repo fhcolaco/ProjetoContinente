@@ -15,10 +15,11 @@ void printString(void *data)
     printf("%s ", (char *)data);
 }
 
-void compareQuickFind(void *data, void *data2)
+int compareEqualInt(void *data, void *data2)
 {
     if (*(int *)data == *(int *)data2)
     {
-        printf("Found it!");
+        return 1;
     }
+    return 0;
 }
