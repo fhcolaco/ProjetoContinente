@@ -72,17 +72,16 @@ CLIENT *createClient(int id, char *name, struct List *productList)
 struct List *createProductList()
 {
     struct List *ListaProdutos = createList();
-    FILE *products;
-    products = fopen("produtosOriginal.txt", "r");
+    FILE *products  = fopen("produtosOriginal.txt", "r");
     if (products == NULL)
     {
-        printf("Error opening file");
+        printf("Error opening file!\n");
         exit(1);
     }
     else
     {
         printf("Creating product list...\n");
-        char ch;
+        char ch = 0;
         int id;
         char description[100];
         float price;
@@ -132,9 +131,11 @@ struct List *createProductList()
 }
 struct List *createClientList(struct List *productList)
 {
+    if(productList->head == NULL){
+        productList = createProductList();
+    }
     struct List *clientList = createList();
-    FILE *clients;
-    clients = fopen("clientesOriginal.txt", "r");
+    FILE *clients = fopen("clientesOriginal.txt", "r");
     if (clients == NULL)
     {
         printf("Error opening file");
@@ -143,7 +144,7 @@ struct List *createClientList(struct List *productList)
     else
     {
         printf("Creating client list...\n");
-        char ch;
+        char ch = 0;
         int id;
         char name[50];
         int estaMerdaNaoEstaAFAzerNada = 0;

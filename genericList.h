@@ -46,13 +46,11 @@ void addToMiddle(struct List *list, void *data, int (*compare)(void *, void *))
         }
         if (previous == NULL)
         {
-            printf("FIM DA LISTA i = %d\n", i);
             new_node->next = list->head;
             list->head = new_node;
         }
         else
         {
-            printf("MEIO DA LISTA i = %d\n", i);
             previous->next = new_node;
             new_node->next = current;
         }
