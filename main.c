@@ -29,5 +29,21 @@ int main(void)
     printf("Exitem %d empregados na Lista COLABORADORES.\n", employeeList->size);
     printf("Exitem %d eventos na Lista EVENTOS.\n", eventHorizon->size);
 
+    // WRITE HISTORY TO TXT
+    char historyLine[100];
+    struct List *eventHorizonCopy = copyList(eventHorizon);
+    struct Node *current = (struct Event *)eventHorizonCopy->head;
+    FILE *f = fopen("History.txt", "w");
+    fprintf(f, "");
+    fclose(f);
+    while (current != NULL)
+    {
+        struct Event *event = (struct Event *)current->data;
+        sprintf(historyLine, "O Cliente %d chegou à loja ao instante %d", event->client->id, event->time);
+        writeLineToTxt(historyLine);
+        free(event);
+        current = current->next;
+    }
+
     return 0;
 };

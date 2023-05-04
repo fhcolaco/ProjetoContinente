@@ -18,7 +18,8 @@ int compareTimes(struct Event *data, struct Event *data2)
     return 0;
 }
 
-CLIENT *checkIfClientExists(struct List *eventHorizon, int id){
+CLIENT *checkIfClientExists(struct List *eventHorizon, int id)
+{
     struct Node *current = eventHorizon->head;
     for (int i = 0; i < eventHorizon->size; i++)
     {
@@ -32,39 +33,55 @@ CLIENT *checkIfClientExists(struct List *eventHorizon, int id){
     return NULL;
 }
 
-
-
 struct List *createEventHorizon(struct List *clientList)
 {
     printf("Creating event horizon...\n");
     struct List *eventHorizon = createList();
     srand(time(0));
     unsigned int t = 0;
-    int numberOfClients = rand() % 7000 + 3000;
+    int numberOfClients = rand() % 4000 + 3000;
     int randomClient = 0;
     for (int i = numberOfClients; i != 0; i--)
     {
         struct List *current = copyList(clientList);
         randomClient = rand() % clientList->size;
-        for(int j = 0; j < randomClient; j++){
+        for (int j = 0; j < randomClient; j++)
+        {
             current->head = current->head->next;
         }
-        while(checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) != NULL){
-            if(current->head->next == NULL) {
+        while (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) != NULL)
+        {
+            if (current->head->next == NULL)
+            {
                 i++;
                 break;
-            } else {
+            }
+            else
+            {
                 current->head = current->head->next;
             }
         }
-        struct Event *arrival = (struct Event *)malloc(sizeof(struct Event));
-        t = rand() % 43200;
-        arrival->client = (struct Client *)current->head->data;
-        arrival->type = 0;
-        arrival->time = t;
-        addToMiddle(eventHorizon, arrival, *compareTimes);
-        free(current);
+        if (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) == NULL)
+        {
+            struct Event *arrival = (struct Event *)malloc(sizeof(struct Event));
+            t = rand() % 43200;
+            arrival->client = (struct Client *)current->head->data;
+            arrival->type = 0;
+            arrival->time = t;
+            addToMiddle(eventHorizon, arrival, *compareTimes);
+            free(current);
+        }
     }
+
     printf("\33[0;32mEvent horizon created.\n\33[0;97m");
     return eventHorizon;
+}
+
+void writeLineToTxt(char line[])
+{
+    char caracter = 0;
+    int i = 0;
+    FILE *file = fopen("History.txt", "a");
+    fprintf(file, "%s\n", line);
+    fclose(file);
 }
