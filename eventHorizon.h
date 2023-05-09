@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-struct Event
+typedef struct Event
 {
     struct Client *client;
-    unsigned int type; // 0 = arrival, 1 = checkout, 2 = pay, 3 = leave
+    unsigned int type; // 0 = arrival, 1 = checkout, 2 = pay and leave
     unsigned int time; // 0 to 43200 (OPEN 12 hours)
-};
+} EVENT;
 
 int compareTimes(struct Event *data, struct Event *data2)
 {
@@ -84,4 +84,15 @@ void writeLineToTxt(char line[])
     FILE *file = fopen("History.txt", "a");
     fprintf(file, "%s\n", line);
     fclose(file);
+}
+
+void printEvent(EVENT *event){
+    printf("Client: %d\n", event->client->id);
+    if(event->type == 0)
+        printf("Type: Arrival\n");
+    else if(event->type == 1)
+        printf("Type: Checkout\n");
+    else if(event->type == 2)
+        printf("Type: Pay and leave\n");
+    printf("Time: %d\n", event->time);
 }

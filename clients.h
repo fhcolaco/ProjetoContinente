@@ -185,7 +185,7 @@ void printProduct(PRODUCT *product)
 
 void printClient(struct Client *client)
 {
-    printf("Client %d: %s\n", client->id, client->name);
+    printf("Cliente %d: %s\n", client->id, client->name);
 }
 
 void printShoppingList(struct Client *client)
@@ -226,7 +226,7 @@ float calculateTotalTimeInCheckOut(struct Client *client)
     }
     while (current != NULL)
     {
-        totalTime = ((PRODUCT *)current->data)->timeInCheckOut;
+        totalTime += ((PRODUCT *)current->data)->timeInCheckOut;
         current = current->next;
     }
     return totalTime;

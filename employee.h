@@ -62,3 +62,8 @@ struct List *createEmployeeList()
     fclose(file);
     return employeeList;
 }
+
+void printEmployee(EMPLOYEE *employee)
+{
+    printf("%s, employee number: %d, is currently%s working\n", employee->name, employee->numMec, employee->isWorking ? "" : " not");
+}

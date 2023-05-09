@@ -6,12 +6,12 @@ set(CMAKE_C_STANDARD 11)
 include_directories(.)
 
 add_executable(Projeto_Continente
+        filesFunctions.h
         clients.h
-        clientsInCheckout.h
-        clientsInStore.h
         employee.h
         eventHorizon.h
-        filesFunctions.h
+        checkout.h
+        checkoutList.h
         functions.h
         genericList.h
         main.c)
