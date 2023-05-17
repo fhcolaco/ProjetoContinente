@@ -35,7 +35,6 @@ PRODUCT *createProduct(int id, char *description, float price, float timeInStore
 void *generateRandomProductList(struct Client *client, struct List *productList)
 {
     char ch;
-    srand(time(0));
     unsigned int numberOfProducts = MAX_PRODUCTS_PER_CLIENT;
     int id;
     char description[100];
@@ -69,10 +68,28 @@ CLIENT *createClient(int id, char *name, struct List *productList)
     return client;
 }
 
+void *deleteClient(struct List *clientList, CLIENT *client)
+{
+    struct List *newList = createList();
+    struct Node *current = clientList->head;
+    for (int i = 0; i < clientList->size; i++)
+    {
+        if (((struct Client *)current->data)->id != client->id)
+        {
+            addToBackOfList(newList, current->data);
+        }
+        current = current->next;
+    }
+    destroyList(clientList);
+    clientList = newList;
+    destroyList(client->shoppingList);
+    free(client);
+};
+
 struct List *createProductList()
 {
     struct List *ListaProdutos = createList();
-    FILE *products  = fopen("produtosOriginal.txt", "r");
+    FILE *products = fopen("produtosOriginal.txt", "r");
     if (products == NULL)
     {
         printf("Error opening file!\n");
@@ -131,7 +148,8 @@ struct List *createProductList()
 }
 struct List *createClientList(struct List *productList)
 {
-    if(productList->head == NULL){
+    if (productList->head == NULL)
+    {
         productList = createProductList();
     }
     struct List *clientList = createList();

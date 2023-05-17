@@ -141,3 +141,22 @@ struct List *copyList(struct List *list)
     }
     return list2;
 }
+
+void destroyList(struct List *list)
+{
+    struct Node *current = list->head;
+    while (current != NULL)
+    {
+        struct Node *aux = current;
+        current = current->next;
+        free(aux);
+    }
+    free(list);
+}
+
+void nextNode(struct List *list)
+{
+    struct Node *aux = list->head;
+    list->head = list->head->next;
+    free(aux);
+}

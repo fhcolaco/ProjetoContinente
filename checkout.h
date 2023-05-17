@@ -23,13 +23,10 @@ CHECKOUT *createCheckout(int numCheckout)
     return checkout;
 }
 
-void addToCheckoutQueue(CHECKOUT *checkout, CLIENT *data, int time)
+void addToCheckoutQueue(CHECKOUT *checkout, CLIENT *client)
 {
-    addToBackOfList(checkout->queue, data);
-    checkout->timeWaiting += calculateTotalTimeInCheckOut(data);
-    char sentence[100];
-    sprintf(sentence, "Cliente %d entrou na caixa %d ao instante %d", data->id, checkout->numCheckout, time);
-    writeLineToTxt(sentence);
+    addToBackOfList((struct List *)checkout->queue, client);
+    checkout->timeWaiting += calculateTotalTimeInCheckOut(client);
 }
 
 void removeFromCheckoutQueue(CHECKOUT *checkout)
@@ -38,21 +35,54 @@ void removeFromCheckoutQueue(CHECKOUT *checkout)
     checkout->queue->head = checkout->queue->head->next;
 }
 
-void addServingClient(CHECKOUT *checkout, int time) {
+void addServingClient(CHECKOUT *checkout)
+{
     checkout->servingClient = checkout->queue->head->data;
     checkout->timeCheckout += calculateTotalTimeInCheckOut(checkout->servingClient);
-    char sentence[100];
-    sprintf(sentence, "Cliente %d começou a passar os produtos na caixa %d ao instante %d", checkout->servingClient->id, checkout->numCheckout, time);
-    writeLineToTxt(sentence);
 }
 
-void removeServingClient(CHECKOUT *checkout, int time)
+void removeServingClient(CHECKOUT *checkout)
 {
-    char sentence[100];
-    sprintf(sentence, "Cliente %d terminou de passar os produtos na caixa %d e saiu da loja ao instante %d", checkout->servingClient->id, checkout->numCheckout, time);
-    writeLineToTxt(sentence);
-    free(checkout->servingClient);
     checkout->servingClient = NULL;
     checkout->timeCheckout = 0;
+}
 
+CHECKOUT *chooseCheckout(struct List *checkoutList)
+{
+    struct List *aux = copyList(checkoutList);
+    CHECKOUT *checkout = aux->head->data;
+    while (aux->head != NULL)
+    {
+        if (((CHECKOUT *)aux->head->data)->queue->size < checkout->queue->size)
+        {
+            checkout = aux->head->data;
+        }
+        nextNode(aux);
+    }
+    free(aux);
+    return checkout;
+}
+
+CHECKOUT *findCheckout(struct List *checkoutList, CLIENT *client)
+{
+    struct List *aux = copyList(checkoutList);
+    for (int i = 0; i < aux->size; i++)
+    {
+        struct List *aux2 = copyList(((CHECKOUT *)aux->head->data)->queue);
+        for (int j = 0; j < aux2->size; j++)
+        {
+            if (((CLIENT *)aux2->head->data)->id == client->id)
+            {
+                printf("Cliente encontrado\n");
+                free(aux2);
+                free(aux);
+                return ((CHECKOUT *)aux->head->data);
+            }
+            aux2->head = aux2->head->next;
+        }
+        free(aux2);
+        aux->head = aux->head->next;
+    }
+    free(aux);
+    return NULL;
 }

@@ -5,7 +5,7 @@
 typedef struct Event
 {
     struct Client *client;
-    unsigned int type; // 0 = arrival, 1 = checkout, 2 = pay and leave
+    unsigned int type; // 0 = arrival, 1 = checkout, 2 = start checkout, 3 = end checkout and leave
     unsigned int time; // 0 to 43200 (OPEN 12 hours)
 } EVENT;
 
@@ -86,13 +86,14 @@ void writeLineToTxt(char line[])
     fclose(file);
 }
 
-void printEvent(EVENT *event){
+void printEvent(EVENT *event)
+{
     printf("Client: %d\n", event->client->id);
-    if(event->type == 0)
+    if (event->type == 0)
         printf("Type: Arrival\n");
-    else if(event->type == 1)
+    else if (event->type == 1)
         printf("Type: Checkout\n");
-    else if(event->type == 2)
+    else if (event->type == 2)
         printf("Type: Pay and leave\n");
     printf("Time: %d\n", event->time);
 }
