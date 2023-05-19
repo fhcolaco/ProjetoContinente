@@ -1,40 +1,327 @@
 Histórico de eventos:
-Cliente 488250 entrou na loja ao instante 32.
-Cliente 509071 entrou na loja ao instante 33.
-Cliente 579982 entrou na loja ao instante 38.
-Cliente 661220 entrou na loja ao instante 41.
-Cliente 131712 entrou na loja ao instante 57.
-Cliente 80647 entrou na loja ao instante 62.
-Cliente 863721 entrou na loja ao instante 85.
-Cliente 648727 entrou na loja ao instante 99.
-Cliente 397559 entrou na loja ao instante 104.
-Cliente 588199 entrou na loja ao instante 120.
-Cliente 82713 entrou na loja ao instante 121.
-Cliente 914204 entrou na loja ao instante 127.
-Cliente 698226 entrou na loja ao instante 143.
-Cliente 719372 entrou na loja ao instante 172.
-Cliente 352918 entrou na loja ao instante 172.
-Cliente 174281 entrou na loja ao instante 203.
-Cliente 710658 entrou na loja ao instante 210.
-Cliente 448230 entrou na loja ao instante 217.
-Cliente 590877 entrou na loja ao instante 248.
-Cliente 832723 entrou na loja ao instante 253.
-Cliente 444986 entrou na loja ao instante 268.
-Cliente 752993 entrou na loja ao instante 282.
-Cliente 210139 entrou na loja ao instante 288.
-Cliente 903249 entrou na loja ao instante 296.
-Cliente 217099 entrou na loja ao instante 298.
-Cliente 835956 entrou na loja ao instante 305.
-Cliente 559218 entrou na loja ao instante 305.
-Cliente 630328 entrou na loja ao instante 306.
-Cliente 914284 entrou na loja ao instante 318.
-Cliente 798059 entrou na loja ao instante 320.
-Cliente 509071 terminou de procurar produtos e entrou na fila no instante 328.
+Cliente 502539 entrou na loja ao instante 10.
+Cliente 557244 entrou na loja ao instante 11.
+Cliente 435750 entrou na loja ao instante 22.
+Cliente 497198 entrou na loja ao instante 27.
+Cliente 920878 entrou na loja ao instante 43.
+Cliente 301704 entrou na loja ao instante 59.
+Cliente 300660 entrou na loja ao instante 65.
+Cliente 899484 entrou na loja ao instante 95.
+Cliente 266505 entrou na loja ao instante 105.
+Cliente 488465 entrou na loja ao instante 110.
+Cliente 734578 entrou na loja ao instante 114.
+Cliente 499047 entrou na loja ao instante 123.
+Cliente 977493 entrou na loja ao instante 123.
+Cliente 356187 entrou na loja ao instante 124.
+Cliente 25645 entrou na loja ao instante 131.
+Cliente 80319 entrou na loja ao instante 134.
+Cliente 358294 entrou na loja ao instante 136.
+Cliente 374773 entrou na loja ao instante 148.
+Cliente 56593 entrou na loja ao instante 160.
+Cliente 562667 entrou na loja ao instante 174.
+Cliente 88396 entrou na loja ao instante 186.
+Cliente 109582 entrou na loja ao instante 198.
+Cliente 660269 entrou na loja ao instante 205.
+Cliente 928847 entrou na loja ao instante 217.
+Cliente 203450 entrou na loja ao instante 228.
+Cliente 61062 entrou na loja ao instante 228.
+Cliente 250366 entrou na loja ao instante 232.
 CHECKOUT 1 OPENED
-Cliente 900445 entrou na loja ao instante 330.
-Cliente 667826 entrou na loja ao instante 337.
-Cliente 497115 entrou na loja ao instante 337.
-Cliente 188965 entrou na loja ao instante 338.
-Cliente 863721 terminou de procurar produtos e entrou na fila no instante 344.
-Cliente 191717 entrou na loja ao instante 348.
-Cliente 509071 vai ser atendido no instante 352.
+Cliente 301704 terminou de procurar produtos e entrou na fila da caixa 1 no instante 235.
+Cliente 301704 vai ser atendido na caixa 1 no instante 235.
+Cliente 157438 entrou na loja ao instante 237.
+Cliente 186620 entrou na loja ao instante 238.
+Cliente 428459 entrou na loja ao instante 254.
+Cliente 162082 entrou na loja ao instante 267.
+Cliente 301704 terminou de ser atendido da caixa 1 e saiu da loja no instante 268.
+Cliente 734578 terminou de procurar produtos e entrou na fila da caixa 1 no instante 273.
+Cliente 734578 vai ser atendido na caixa 1 no instante 273.
+Cliente 667812 entrou na loja ao instante 298.
+Cliente 266505 terminou de procurar produtos e entrou na fila da caixa 1 no instante 300.
+Cliente 25645 terminou de procurar produtos e entrou na fila da caixa 1 no instante 300.
+Cliente 734578 terminou de ser atendido da caixa 1 e saiu da loja no instante 306.
+Cliente 266505 vai ser atendido na caixa 1 no instante 306.
+Cliente 50698 entrou na loja ao instante 308.
+Cliente 777934 entrou na loja ao instante 322.
+Cliente 133805 entrou na loja ao instante 324.
+Cliente 899484 terminou de procurar produtos e entrou na fila da caixa 1 no instante 333.
+Cliente 80319 terminou de procurar produtos e entrou na fila da caixa 1 no instante 336.
+Cliente 266505 terminou de ser atendido da caixa 1 e saiu da loja no instante 336.
+Cliente 25645 vai ser atendido na caixa 1 no instante 336.
+Cliente 414355 entrou na loja ao instante 339.
+Cliente 254390 entrou na loja ao instante 348.
+Cliente 944817 entrou na loja ao instante 354.
+Cliente 977493 terminou de procurar produtos e entrou na fila da caixa 1 no instante 355.
+Cliente 435750 terminou de procurar produtos e entrou na fila da caixa 1 no instante 364.
+Cliente 581509 entrou na loja ao instante 365.
+Cliente 95748 entrou na loja ao instante 367.
+Cliente 25645 terminou de ser atendido da caixa 1 e saiu da loja no instante 368.
+Cliente 899484 vai ser atendido na caixa 1 no instante 368.
+Cliente 497198 terminou de procurar produtos e entrou na fila da caixa 1 no instante 377.
+Cliente 502539 terminou de procurar produtos e entrou na fila da caixa 1 no instante 378.
+Cliente 920878 terminou de procurar produtos e entrou na fila da caixa 1 no instante 378.
+CHECKOUT 2 OPENED
+Cliente 358294 terminou de procurar produtos e entrou na fila da caixa 2 no instante 379.
+Cliente 358294 vai ser atendido na caixa 2 no instante 379.
+Cliente 588204 entrou na loja ao instante 380.
+Cliente 987447 entrou na loja ao instante 385.
+Cliente 562667 terminou de procurar produtos e entrou na fila da caixa 2 no instante 398.
+Cliente 899484 terminou de ser atendido da caixa 1 e saiu da loja no instante 403.
+Cliente 80319 vai ser atendido na caixa 1 no instante 403.
+Cliente 300660 terminou de procurar produtos e entrou na fila da caixa 2 no instante 406.
+Cliente 358294 terminou de ser atendido da caixa 2 e saiu da loja no instante 408.
+Cliente 562667 vai ser atendido na caixa 2 no instante 408.
+Cliente 541057 entrou na loja ao instante 411.
+Cliente 488465 terminou de procurar produtos e entrou na fila da caixa 2 no instante 411.
+Cliente 61062 terminou de procurar produtos e entrou na fila da caixa 2 no instante 411.
+Cliente 374773 terminou de procurar produtos e entrou na fila da caixa 2 no instante 420.
+Cliente 222332 entrou na loja ao instante 421.
+Cliente 557244 terminou de procurar produtos e entrou na fila da caixa 2 no instante 428.
+Cliente 851596 entrou na loja ao instante 431.
+Cliente 687224 entrou na loja ao instante 432.
+Cliente 562667 terminou de ser atendido da caixa 2 e saiu da loja no instante 433.
+Cliente 300660 vai ser atendido na caixa 2 no instante 433.
+Cliente 856902 entrou na loja ao instante 435.
+Cliente 660269 terminou de procurar produtos e entrou na fila da caixa 2 no instante 437.
+Cliente 80319 terminou de ser atendido da caixa 1 e saiu da loja no instante 439.
+Cliente 977493 vai ser atendido na caixa 1 no instante 439.
+Cliente 946123 entrou na loja ao instante 446.
+Cliente 668294 entrou na loja ao instante 460.
+Cliente 300660 terminou de ser atendido da caixa 2 e saiu da loja no instante 462.
+Cliente 488465 vai ser atendido na caixa 2 no instante 462.
+Cliente 238327 entrou na loja ao instante 466.
+Cliente 421430 entrou na loja ao instante 471.
+Cliente 893467 entrou na loja ao instante 471.
+Cliente 977493 terminou de ser atendido da caixa 1 e saiu da loja no instante 472.
+Cliente 435750 vai ser atendido na caixa 1 no instante 472.
+Cliente 88396 terminou de procurar produtos e entrou na fila da caixa 1 no instante 473.
+Cliente 309341 entrou na loja ao instante 476.
+Cliente 635048 entrou na loja ao instante 476.
+Cliente 109582 terminou de procurar produtos e entrou na fila da caixa 1 no instante 484.
+Cliente 488465 terminou de ser atendido da caixa 2 e saiu da loja no instante 484.
+Cliente 61062 vai ser atendido na caixa 2 no instante 484.
+Cliente 551953 entrou na loja ao instante 487.
+Cliente 61062 terminou de ser atendido da caixa 2 e saiu da loja no instante 500.
+Cliente 374773 vai ser atendido na caixa 2 no instante 500.
+Cliente 614569 entrou na loja ao instante 502.
+Cliente 435750 terminou de ser atendido da caixa 1 e saiu da loja no instante 502.
+Cliente 497198 vai ser atendido na caixa 1 no instante 502.
+Cliente 928847 terminou de procurar produtos e entrou na fila da caixa 2 no instante 508.
+Cliente 357634 entrou na loja ao instante 512.
+Cliente 240475 entrou na loja ao instante 512.
+Cliente 814218 entrou na loja ao instante 512.
+Cliente 895754 entrou na loja ao instante 513.
+Cliente 157438 terminou de procurar produtos e entrou na fila da caixa 2 no instante 513.
+Cliente 509905 entrou na loja ao instante 517.
+Cliente 142587 entrou na loja ao instante 522.
+Cliente 497198 terminou de ser atendido da caixa 1 e saiu da loja no instante 524.
+Cliente 502539 vai ser atendido na caixa 1 no instante 524.
+Cliente 374773 terminou de ser atendido da caixa 2 e saiu da loja no instante 527.
+Cliente 557244 vai ser atendido na caixa 2 no instante 527.
+Cliente 674365 entrou na loja ao instante 530.
+Cliente 189183 entrou na loja ao instante 530.
+Cliente 356187 terminou de procurar produtos e entrou na fila da caixa 1 no instante 532.
+Cliente 186620 terminou de procurar produtos e entrou na fila da caixa 2 no instante 535.
+Cliente 499047 terminou de procurar produtos e entrou na fila da caixa 1 no instante 547.
+Cliente 254390 terminou de procurar produtos e entrou na fila da caixa 2 no instante 558.
+Cliente 502539 terminou de ser atendido da caixa 1 e saiu da loja no instante 561.
+Cliente 557244 terminou de ser atendido da caixa 2 e saiu da loja no instante 561.
+Cliente 920878 vai ser atendido na caixa 1 no instante 561.
+Cliente 660269 vai ser atendido na caixa 2 no instante 561.
+Cliente 900972 entrou na loja ao instante 572.
+Cliente 794749 entrou na loja ao instante 574.
+Cliente 660269 terminou de ser atendido da caixa 2 e saiu da loja no instante 585.
+Cliente 928847 vai ser atendido na caixa 2 no instante 585.
+Cliente 203450 terminou de procurar produtos e entrou na fila da caixa 2 no instante 586.
+Cliente 162082 terminou de procurar produtos e entrou na fila da caixa 1 no instante 589.
+Cliente 920878 terminou de ser atendido da caixa 1 e saiu da loja no instante 589.
+Cliente 88396 vai ser atendido na caixa 1 no instante 589.
+Cliente 510626 entrou na loja ao instante 593.
+Cliente 777934 terminou de procurar produtos e entrou na fila da caixa 1 no instante 593.
+Cliente 56593 terminou de procurar produtos e entrou na fila da caixa 2 no instante 597.
+Cliente 88396 terminou de ser atendido da caixa 1 e saiu da loja no instante 609.
+Cliente 109582 vai ser atendido na caixa 1 no instante 609.
+Cliente 632738 entrou na loja ao instante 610.
+Cliente 928847 terminou de ser atendido da caixa 2 e saiu da loja no instante 611.
+Cliente 157438 vai ser atendido na caixa 2 no instante 611.
+Cliente 666450 entrou na loja ao instante 612.
+Cliente 590053 entrou na loja ao instante 612.
+Cliente 414355 terminou de procurar produtos e entrou na fila da caixa 1 no instante 613.
+Cliente 428459 terminou de procurar produtos e entrou na fila da caixa 2 no instante 615.
+Cliente 667812 terminou de procurar produtos e entrou na fila da caixa 1 no instante 620.
+Cliente 555143 entrou na loja ao instante 622.
+Cliente 763570 entrou na loja ao instante 632.
+Cliente 109582 terminou de ser atendido da caixa 1 e saiu da loja no instante 634.
+Cliente 356187 vai ser atendido na caixa 1 no instante 634.
+Cliente 133805 terminou de procurar produtos e entrou na fila da caixa 1 no instante 638.
+Cliente 167565 entrou na loja ao instante 641.
+Cliente 581509 terminou de procurar produtos e entrou na fila da caixa 2 no instante 641.
+CHECKOUT 3 OPENED
+Cliente 893467 terminou de procurar produtos e entrou na fila da caixa 3 no instante 641.
+Cliente 893467 vai ser atendido na caixa 3 no instante 641.
+Cliente 157438 terminou de ser atendido da caixa 2 e saiu da loja no instante 645.
+Cliente 186620 vai ser atendido na caixa 2 no instante 645.
+Cliente 856902 terminou de procurar produtos e entrou na fila da caixa 3 no instante 648.
+Cliente 112471 entrou na loja ao instante 653.
+Cliente 222332 terminou de procurar produtos e entrou na fila da caixa 3 no instante 653.
+Cliente 478254 entrou na loja ao instante 659.
+Cliente 356187 terminou de ser atendido da caixa 1 e saiu da loja no instante 659.
+Cliente 893467 terminou de ser atendido da caixa 3 e saiu da loja no instante 659.
+Cliente 499047 vai ser atendido na caixa 1 no instante 659.
+Cliente 856902 vai ser atendido na caixa 3 no instante 659.
+Cliente 70719 entrou na loja ao instante 660.
+Cliente 50698 terminou de procurar produtos e entrou na fila da caixa 3 no instante 668.
+Cliente 945220 entrou na loja ao instante 669.
+Cliente 987447 terminou de procurar produtos e entrou na fila da caixa 3 no instante 670.
+Cliente 499047 terminou de ser atendido da caixa 1 e saiu da loja no instante 677.
+Cliente 162082 vai ser atendido na caixa 1 no instante 677.
+Cliente 186620 terminou de ser atendido da caixa 2 e saiu da loja no instante 678.
+Cliente 254390 vai ser atendido na caixa 2 no instante 678.
+Cliente 856902 terminou de ser atendido da caixa 3 e saiu da loja no instante 685.
+Cliente 222332 vai ser atendido na caixa 3 no instante 685.
+Cliente 944817 terminou de procurar produtos e entrou na fila da caixa 3 no instante 689.
+Cliente 254390 terminou de ser atendido da caixa 2 e saiu da loja no instante 690.
+Cliente 203450 vai ser atendido na caixa 2 no instante 690.
+Cliente 636815 entrou na loja ao instante 694.
+Cliente 162082 terminou de ser atendido da caixa 1 e saiu da loja no instante 700.
+Cliente 777934 vai ser atendido na caixa 1 no instante 700.
+Cliente 582465 entrou na loja ao instante 703.
+Cliente 250366 terminou de procurar produtos e entrou na fila da caixa 1 no instante 704.
+Cliente 946123 terminou de procurar produtos e entrou na fila da caixa 2 no instante 706.
+Cliente 635048 terminou de procurar produtos e entrou na fila da caixa 3 no instante 712.
+Cliente 222332 terminou de ser atendido da caixa 3 e saiu da loja no instante 712.
+Cliente 50698 vai ser atendido na caixa 3 no instante 712.
+Cliente 473200 entrou na loja ao instante 714.
+Cliente 421430 terminou de procurar produtos e entrou na fila da caixa 3 no instante 715.
+Cliente 203450 terminou de ser atendido da caixa 2 e saiu da loja no instante 715.
+Cliente 56593 vai ser atendido na caixa 2 no instante 715.
+Cliente 309341 terminou de procurar produtos e entrou na fila da caixa 2 no instante 719.
+Cliente 168590 entrou na loja ao instante 730.
+Cliente 95748 terminou de procurar produtos e entrou na fila da caixa 1 no instante 730.
+Cliente 851596 terminou de procurar produtos e entrou na fila da caixa 2 no instante 730.
+Cliente 777934 terminou de ser atendido da caixa 1 e saiu da loja no instante 730.
+Cliente 414355 vai ser atendido na caixa 1 no instante 730.
+Cliente 759578 entrou na loja ao instante 736.
+Cliente 674365 terminou de procurar produtos e entrou na fila da caixa 1 no instante 736.
+Cliente 811783 entrou na loja ao instante 737.
+Cliente 56593 terminou de ser atendido da caixa 2 e saiu da loja no instante 743.
+Cliente 428459 vai ser atendido na caixa 2 no instante 743.
+Cliente 50698 terminou de ser atendido da caixa 3 e saiu da loja no instante 748.
+Cliente 987447 vai ser atendido na caixa 3 no instante 748.
+Cliente 316219 entrou na loja ao instante 754.
+Cliente 541057 terminou de procurar produtos e entrou na fila da caixa 3 no instante 755.
+Cliente 228247 entrou na loja ao instante 756.
+Cliente 687224 terminou de procurar produtos e entrou na fila da caixa 2 no instante 756.
+Cliente 414355 terminou de ser atendido da caixa 1 e saiu da loja no instante 756.
+Cliente 667812 vai ser atendido na caixa 1 no instante 756.
+Cliente 588204 terminou de procurar produtos e entrou na fila da caixa 1 no instante 762.
+Cliente 510626 terminou de procurar produtos e entrou na fila da caixa 3 no instante 762.
+Cliente 895754 terminou de procurar produtos e entrou na fila da caixa 1 no instante 766.
+Cliente 667812 terminou de ser atendido da caixa 1 e saiu da loja no instante 771.
+Cliente 133805 vai ser atendido na caixa 1 no instante 771.
+Cliente 639494 entrou na loja ao instante 772.
+Cliente 542821 entrou na loja ao instante 774.
+Cliente 987447 terminou de ser atendido da caixa 3 e saiu da loja no instante 775.
+Cliente 944817 vai ser atendido na caixa 3 no instante 775.
+Cliente 428459 terminou de ser atendido da caixa 2 e saiu da loja no instante 777.
+Cliente 581509 vai ser atendido na caixa 2 no instante 777.
+Cliente 278967 entrou na loja ao instante 779.
+Cliente 773025 entrou na loja ao instante 788.
+Cliente 509905 terminou de procurar produtos e entrou na fila da caixa 2 no instante 793.
+Cliente 238327 terminou de procurar produtos e entrou na fila da caixa 3 no instante 799.
+Cliente 431752 entrou na loja ao instante 804.
+Cliente 179585 entrou na loja ao instante 805.
+Cliente 133805 terminou de ser atendido da caixa 1 e saiu da loja no instante 806.
+Cliente 250366 vai ser atendido na caixa 1 no instante 806.
+Cliente 484717 entrou na loja ao instante 807.
+Cliente 668294 terminou de procurar produtos e entrou na fila da caixa 1 no instante 810.
+Cliente 551953 terminou de procurar produtos e entrou na fila da caixa 1 no instante 812.
+Cliente 874221 entrou na loja ao instante 813.
+Cliente 944817 terminou de ser atendido da caixa 3 e saiu da loja no instante 813.
+Cliente 635048 vai ser atendido na caixa 3 no instante 813.
+Cliente 222227 entrou na loja ao instante 814.
+Cliente 614569 terminou de procurar produtos e entrou na fila da caixa 3 no instante 814.
+Cliente 133404 entrou na loja ao instante 815.
+Cliente 632738 terminou de procurar produtos e entrou na fila da caixa 2 no instante 821.
+Cliente 581509 terminou de ser atendido da caixa 2 e saiu da loja no instante 822.
+Cliente 946123 vai ser atendido na caixa 2 no instante 822.
+Cliente 794749 terminou de procurar produtos e entrou na fila da caixa 2 no instante 824.
+Cliente 814218 terminou de procurar produtos e entrou na fila da caixa 3 no instante 829.
+Cliente 730683 entrou na loja ao instante 831.
+CHECKOUT 4 OPENED
+Cliente 189183 terminou de procurar produtos e entrou na fila da caixa 4 no instante 834.
+Cliente 189183 vai ser atendido na caixa 4 no instante 834.
+Cliente 250366 terminou de ser atendido da caixa 1 e saiu da loja no instante 840.
+Cliente 95748 vai ser atendido na caixa 1 no instante 840.
+Cliente 794833 entrou na loja ao instante 841.
+Cliente 799102 entrou na loja ao instante 841.
+Cliente 635048 terminou de ser atendido da caixa 3 e saiu da loja no instante 842.
+Cliente 421430 vai ser atendido na caixa 3 no instante 842.
+Cliente 590053 terminou de procurar produtos e entrou na fila da caixa 4 no instante 844.
+Cliente 946123 terminou de ser atendido da caixa 2 e saiu da loja no instante 852.
+Cliente 309341 vai ser atendido na caixa 2 no instante 852.
+Cliente 900972 terminou de procurar produtos e entrou na fila da caixa 4 no instante 854.
+Cliente 700319 entrou na loja ao instante 855.
+Cliente 189183 terminou de ser atendido da caixa 4 e saiu da loja no instante 857.
+Cliente 590053 vai ser atendido na caixa 4 no instante 857.
+Cliente 168590 terminou de procurar produtos e entrou na fila da caixa 4 no instante 859.
+Cliente 945220 terminou de procurar produtos e entrou na fila da caixa 4 no instante 861.
+Cliente 666450 terminou de procurar produtos e entrou na fila da caixa 4 no instante 862.
+Cliente 421430 terminou de ser atendido da caixa 3 e saiu da loja no instante 862.
+Cliente 541057 vai ser atendido na caixa 3 no instante 862.
+Cliente 309341 terminou de ser atendido da caixa 2 e saiu da loja no instante 875.
+Cliente 851596 vai ser atendido na caixa 2 no instante 875.
+Cliente 469114 entrou na loja ao instante 877.
+Cliente 586330 entrou na loja ao instante 877.
+Cliente 541057 terminou de ser atendido da caixa 3 e saiu da loja no instante 879.
+Cliente 510626 vai ser atendido na caixa 3 no instante 879.
+Cliente 459903 entrou na loja ao instante 882.
+Cliente 95748 terminou de ser atendido da caixa 1 e saiu da loja no instante 882.
+Cliente 674365 vai ser atendido na caixa 1 no instante 882.
+Cliente 516463 entrou na loja ao instante 883.
+Cliente 272107 entrou na loja ao instante 888.
+Cliente 590053 terminou de ser atendido da caixa 4 e saiu da loja no instante 891.
+Cliente 900972 vai ser atendido na caixa 4 no instante 891.
+Cliente 627052 entrou na loja ao instante 899.
+Cliente 412591 entrou na loja ao instante 903.
+Cliente 851596 terminou de ser atendido da caixa 2 e saiu da loja no instante 908.
+Cliente 687224 vai ser atendido na caixa 2 no instante 908.
+Cliente 510626 terminou de ser atendido da caixa 3 e saiu da loja no instante 910.
+Cliente 900972 terminou de ser atendido da caixa 4 e saiu da loja no instante 910.
+Cliente 238327 vai ser atendido na caixa 3 no instante 910.
+Cliente 168590 vai ser atendido na caixa 4 no instante 910.
+Cliente 674365 terminou de ser atendido da caixa 1 e saiu da loja no instante 916.
+Cliente 588204 vai ser atendido na caixa 1 no instante 916.
+Cliente 508629 entrou na loja ao instante 932.
+Cliente 238327 terminou de ser atendido da caixa 3 e saiu da loja no instante 940.
+Cliente 614569 vai ser atendido na caixa 3 no instante 940.
+Cliente 687224 terminou de ser atendido da caixa 2 e saiu da loja no instante 943.
+Cliente 509905 vai ser atendido na caixa 2 no instante 943.
+Cliente 357634 terminou de procurar produtos e entrou na fila da caixa 3 no instante 944.
+Cliente 582465 terminou de procurar produtos e entrou na fila da caixa 2 no instante 944.
+Cliente 142587 terminou de procurar produtos e entrou na fila da caixa 3 no instante 949.
+Cliente 310253 entrou na loja ao instante 951.
+Cliente 588204 terminou de ser atendido da caixa 1 e saiu da loja no instante 953.
+Cliente 895754 vai ser atendido na caixa 1 no instante 953.
+Cliente 168590 terminou de ser atendido da caixa 4 e saiu da loja no instante 954.
+Cliente 945220 vai ser atendido na caixa 4 no instante 954.
+Cliente 614569 terminou de ser atendido da caixa 3 e saiu da loja no instante 958.
+Cliente 814218 vai ser atendido na caixa 3 no instante 958.
+Cliente 639494 terminou de procurar produtos e entrou na fila da caixa 4 no instante 970.
+Cliente 759578 terminou de procurar produtos e entrou na fila da caixa 1 no instante 972.
+Cliente 841163 entrou na loja ao instante 974.
+Cliente 814218 terminou de ser atendido da caixa 3 e saiu da loja no instante 974.
+Cliente 357634 vai ser atendido na caixa 3 no instante 974.
+Cliente 403602 entrou na loja ao instante 976.
+Cliente 240475 terminou de procurar produtos e entrou na fila da caixa 3 no instante 979.
+Cliente 945220 terminou de ser atendido da caixa 4 e saiu da loja no instante 981.
+Cliente 666450 vai ser atendido na caixa 4 no instante 981.
+Cliente 509905 terminou de ser atendido da caixa 2 e saiu da loja no instante 982.
+Cliente 632738 vai ser atendido na caixa 2 no instante 982.
+Cliente 895754 terminou de ser atendido da caixa 1 e saiu da loja no instante 989.
+Cliente 668294 vai ser atendido na caixa 1 no instante 989.
+CHECKOUT 4 CLOSED
+Cliente 542821 terminou de procurar produtos e entrou na fila da caixa 1 no instante 990.
+Cliente 555143 terminou de procurar produtos e entrou na fila da caixa 2 no instante 996.
+Cliente 632738 terminou de ser atendido da caixa 2 e saiu da loja no instante 1003.
+Cliente 794749 vai ser atendido na caixa 2 no instante 1003.

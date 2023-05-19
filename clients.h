@@ -68,22 +68,22 @@ CLIENT *createClient(int id, char *name, struct List *productList)
     return client;
 }
 
-void *deleteClient(struct List *clientList, CLIENT *client)
+struct List *deleteClient(struct List *clientList, CLIENT *client)
 {
     struct List *newList = createList();
     struct Node *current = clientList->head;
     for (int i = 0; i < clientList->size; i++)
     {
-        if (((struct Client *)current->data)->id != client->id)
+        if (((CLIENT *)current->data)->id != client->id)
         {
             addToBackOfList(newList, current->data);
         }
         current = current->next;
     }
-    destroyList(clientList);
-    clientList = newList;
-    destroyList(client->shoppingList);
+    clientList = copyList(newList);
+    free(client->shoppingList);
     free(client);
+    return clientList;
 };
 
 struct List *createProductList()

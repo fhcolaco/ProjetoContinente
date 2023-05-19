@@ -37,8 +37,6 @@ int main(void)
 
     printf("\n\33[0;32mPressione ENTER para continuar.\n\33[0;97m");
     getchar();
-    system("clear");
-
     printf("Começar simulação\n");
     FILE *txt = fopen("History.txt", "w");
     fprintf(txt, "Histórico de eventos:\n");
@@ -61,58 +59,74 @@ int main(void)
         else if (event->type == 1)
         {
             // Finish searching for products and enter a queue
-            sprintf(sentence, "Cliente %d terminou de procurar produtos e entrou na fila no instante %d.", event->client->id, event->time);
-            writeLineToTxt(sentence);
             checkStatusOfCheckouts(checkoutList);
             CHECKOUT *checkout = chooseCheckout(checkoutList);
+            sprintf(sentence, "Cliente %d terminou de procurar produtos e entrou na fila da caixa %d no instante %d.", event->client->id, checkout->numCheckout, event->time);
+            writeLineToTxt(sentence);
             addToCheckoutQueue(checkout, event->client);
-            EVENT *newEvent = (EVENT *)malloc(sizeof(EVENT));
-            newEvent->client = event->client;
-            newEvent->type = 2;
-            newEvent->time = event->time + (int)checkout->timeWaiting;
-            addToMiddle(eventHorizon, newEvent, *compareTimes);
+            if (checkout->servingClient == NULL && checkout->queue->size == 1)
+            {
+                EVENT *newEvent = (EVENT *)malloc(sizeof(EVENT));
+                newEvent->client = event->client;
+                newEvent->type = 2;
+                newEvent->time = event->time;
+                addToMiddle(eventHorizon, newEvent, *compareTimes);
+            }
         }
         else if (event->type == 2)
         {
-            sprintf(sentence, "Cliente %d vai ser atendido no instante %d.", event->client->id, event->time);
-            writeLineToTxt(sentence);
             CHECKOUT *checkout = findCheckout(checkoutList, event->client);
-            // printf("CAIXA %d\n", checkout->numCheckout);
             if (checkout == NULL)
             {
                 printf("ERRO: checkout não encontrado.\n");
+                printf("Cliente: %d\n", event->client->id);
+                printf("Evento: %d\n", event->type);
                 exit(1);
             }
             else
             {
-                addServingClient(checkout);
-                removeFromCheckoutQueue(checkout);
+                sprintf(sentence, "Cliente %d vai ser atendido na caixa %d no instante %d.", event->client->id, checkout->numCheckout, event->time);
+                writeLineToTxt(sentence);
                 EVENT *newEvent = (EVENT *)malloc(sizeof(EVENT));
                 newEvent->client = event->client;
                 newEvent->type = 3;
-                newEvent->time = event->time + (int)checkout->timeCheckout;
+                newEvent->time = event->time + (int)calculateTotalTimeInCheckOut(event->client);
+                addServingClient(checkout);
+                removeFromCheckoutQueue(checkout);
                 addToMiddle(eventHorizon, newEvent, *compareTimes);
             }
         }
         else if (event->type == 3)
         {
             // finished being served and left the store
-            sprintf(sentence, "Cliente %d terminou de ser atendido e saiu da loja no instante %d.", event->client->id, event->time);
-            writeLineToTxt(sentence);
-            CHECKOUT *checkout = findCheckout(checkoutList, event->client);
+            CHECKOUT *checkout = findServingClient(checkoutList, event->client);
             if (checkout == NULL)
             {
                 printf("ERRO: checkout não encontrado.\n");
+                printf("Cliente: %d\n", event->client->id);
+                printf("Evento: %d\n", event->type);
                 exit(1);
             }
             else
             {
+                sprintf(sentence, "Cliente %d terminou de ser atendido da caixa %d e saiu da loja no instante %d.", event->client->id, checkout->numCheckout, event->time);
+                writeLineToTxt(sentence);
                 removeServingClient(checkout);
-                deleteClient(clientList, event->client);
+                clientList = deleteClient(clientList, event->client);
+                if (checkout->servingClient == NULL && checkout->queue->head != NULL)
+                {
+                    EVENT *newEvent = (EVENT *)malloc(sizeof(EVENT));
+                    newEvent->client = checkout->queue->head->data;
+                    newEvent->type = 2;
+                    newEvent->time = event->time;
+                    addToMiddle(eventHorizon, newEvent, *compareTimes);
+                }
             }
         }
         eventHorizon->head = eventHorizon->head->next;
         free(event);
+        eventHorizon->size--;
+        printf("Exitem %d clientes na Lista CLIENTES e %d eventos na Lista EVENTOS.\n", clientList->size, eventHorizon->size);
     }
     return 0;
 };
