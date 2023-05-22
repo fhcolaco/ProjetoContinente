@@ -8,6 +8,7 @@ typedef struct Checkout
     struct List *queue;
     CLIENT *servingClient;
     float timeWaiting;
+    int closing;
 } CHECKOUT;
 
 CHECKOUT *createCheckout(int numCheckout)
@@ -18,6 +19,7 @@ CHECKOUT *createCheckout(int numCheckout)
     checkout->queue = createList();
     checkout->servingClient = NULL;
     checkout->timeWaiting = 0;
+    checkout->closing = 0;
     return checkout;
 }
 
@@ -62,7 +64,7 @@ CHECKOUT *chooseCheckout(struct List *checkoutList)
     CHECKOUT *checkout = aux->head->data;
     while (aux->head != NULL)
     {
-        if (((CHECKOUT *)aux->head->data)->queue->size < checkout->queue->size)
+        if (((CHECKOUT *)aux->head->data)->queue->size < checkout->queue->size && ((CHECKOUT *)aux->head->data)->closing == 0)
         {
             checkout = aux->head->data;
         }

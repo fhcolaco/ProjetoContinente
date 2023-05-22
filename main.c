@@ -42,7 +42,7 @@ int main(void)
     fprintf(txt, "Histórico de eventos:\n");
     fclose(txt);
     char sentence[100];
-    while (eventHorizon->head->next != NULL)
+    while (eventHorizon->head != NULL)
     {
         EVENT *event = (EVENT *)eventHorizon->head->data;
         if (event->type == 0)
@@ -61,6 +61,13 @@ int main(void)
             // Finish searching for products and enter a queue
             checkStatusOfCheckouts(checkoutList);
             CHECKOUT *checkout = chooseCheckout(checkoutList);
+            if (checkout == NULL)
+            {
+                printf("ERRO: checkout não encontrado.\n");
+                printf("Cliente: %d\n", event->client->id);
+                printf("Evento: %d\n", event->type);
+                exit(1);
+            }
             sprintf(sentence, "Cliente %d terminou de procurar produtos e entrou na fila da caixa %d no instante %d.", event->client->id, checkout->numCheckout, event->time);
             writeLineToTxt(sentence);
             addToCheckoutQueue(checkout, event->client);
@@ -126,7 +133,14 @@ int main(void)
         eventHorizon->head = eventHorizon->head->next;
         free(event);
         eventHorizon->size--;
-        printf("Exitem %d clientes na Lista CLIENTES e %d eventos na Lista EVENTOS.\n", clientList->size, eventHorizon->size);
+        printf("Exitem %d eventos na Lista EVENTOS.\n", eventHorizon->size);
     }
+    destroyList(eventHorizon);
+    destroyList(checkoutList);
+    destroyList(employeeList);
+    destroyList(clientList);
+    destroyList(productList);
+    // Simulação terminada com sucesso! Obrigado por ter escolhido o continente, onde a sua satisfação é a nossa prioridade, até nas ilhas!
+    printf("\n\33[0;32mSimulação terminada com sucesso!\nObrigado por ter escolhido o Continente.\n\tOnde a sua satisfação é a nossa prioridade, até nas ilhas\n\33[0;97m");
     return 0;
 };

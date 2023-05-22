@@ -25,6 +25,11 @@ void closeCheckout(struct List *checkoutList, struct Checkout *checkout)
     {
         checkoutList->head = current->next;
     }
+    else if (current == checkoutList->tail)
+    {
+        checkoutList->tail = previous;
+        previous->next = NULL;
+    }
     else
     {
         previous->next = current->next;
@@ -37,6 +42,16 @@ void closeCheckout(struct List *checkoutList, struct Checkout *checkout)
 
 void checkStatusOfCheckouts(struct List *checkoutList)
 {
+    if (checkoutList->tail != NULL && ((CHECKOUT *)checkoutList->tail->data)->closing == 1)
+    {
+        CHECKOUT *checkout = checkoutList->tail->data;
+        if (checkout->queue->size == 0 && checkout->servingClient == NULL)
+        {
+            // there are no clients in the queue and the checkout is not serving a client, so it can be closed
+            closeCheckout(checkoutList, checkout);
+            free(checkout);
+        }
+    }
     if (checkoutList->size == 0)
     {
         // there are no checkouts open
@@ -59,7 +74,14 @@ void checkStatusOfCheckouts(struct List *checkoutList)
         }
         else if (averageClientsPerCheckout < 2 && checkoutList->size > 1)
         {
-            closeCheckout(checkoutList, checkoutList->tail->data);
+            if (((CHECKOUT *)checkoutList->tail->data)->queue->size == 0 && ((CHECKOUT *)checkoutList->tail->data)->servingClient == NULL)
+            {
+                closeCheckout(checkoutList, checkoutList->tail->data);
+            }
+            else if (((CHECKOUT *)checkoutList->tail->data)->closing == 0)
+            {
+                ((CHECKOUT *)checkoutList->tail->data)->closing = 1;
+            }
         }
     }
 }
