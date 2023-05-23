@@ -1,3 +1,0 @@
-C:/Users/fcolaco/Documents/Ano1Semestre2/ED/Projeto Continente/cmake-build-debug/CMakeFiles/Projeto_Continente.dir
-C:/Users/fcolaco/Documents/Ano1Semestre2/ED/Projeto Continente/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/fcolaco/Documents/Ano1Semestre2/ED/Projeto Continente/cmake-build-debug/CMakeFiles/rebuild_cache.dir
