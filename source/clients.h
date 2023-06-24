@@ -22,6 +22,8 @@ void *generateRandomProductList(struct Client *client, struct List *productList)
 void createShoppingList(struct Client *client, struct List *productList);
 struct List *deleteClient(struct List *clientList, CLIENT *client);
 struct List *createProductList();
+CLIENT *addSingleClientToClientList(struct List *clientList, struct List *productList);
+float calculateTotalPrice(struct Client *client);
 struct List *createClientList(struct List *productList);
 void printProduct(PRODUCT *product);
 void printClient(struct Client *client);

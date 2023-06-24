@@ -18,6 +18,7 @@ typedef struct Event
 int compareTimes(struct Event *data, struct Event *data2);
 CLIENT *checkIfClientExists(struct List *eventHorizon, int id);
 struct List *createEventHorizon(struct List *clientList);
+void addSingleClient(struct List *eventHorizon, struct List *productList, struct List *clientList, int arrivalTime);
 void writeLineToTxt(char line[]);
 void printEvent(EVENT *event);
 

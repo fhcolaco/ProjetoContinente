@@ -177,6 +177,59 @@ struct List *createClientList(struct List *productList)
     return clientList;
 }
 
+CLIENT *addSingleClientToClientList(struct List *clientList, struct List *productList)
+{
+    FILE *clients = fopen("clientesOriginal.txt", "r");
+    if (clients == NULL)
+    {
+        printf("Error opening file");
+        exit(1);
+    }
+    else
+    {
+        char ch = 0;
+        int id;
+        char name[50];
+        int exists = 0;
+        while (ch != EOF)
+        {
+            name[0] = 0;
+            ch = '\0';
+            for (int i = 0; i < 2; i++)
+            {
+                char aux[50] = "\0";
+                ch = fgetc(clients);
+                while (ch != '\t' && ch != '\n' && ch != EOF)
+                {
+                    strncat(aux, &ch, 1);
+                    ch = fgetc(clients);
+                }
+                if (i == 0)
+                {
+                    id = atoi(aux);
+                }
+                if (i == 1)
+                {
+                    strcpy(name, aux);
+                }
+            }
+            for (int i = 0; i < clientList->size; i++)
+            {
+                if (((CLIENT *)clientList->head->data)->id == id)
+                {
+                    exists = 1;
+                }
+            }
+            if (exists == 0)
+            {
+                CLIENT *client = createClient(id, name, productList);
+                addToBackOfList(clientList, client);
+                return client;
+            }
+        }
+    }
+}
+
 void printProduct(PRODUCT *product)
 {
     printf("%d\t%s\t%.2f\t%.2f\t%.2f\n", product->id, product->description, product->price, product->timeInStore, product->timeInCheckOut);
@@ -229,4 +282,20 @@ float calculateTotalTimeInCheckOut(struct Client *client)
         current = current->next;
     }
     return totalTime;
+}
+
+float calculateTotalPrice(struct Client *client)
+{
+    float totalPrice = 0;
+    struct Node *current = client->shoppingList->head;
+    if (current == NULL)
+    {
+        return -1;
+    }
+    while (current != NULL)
+    {
+        totalPrice += ((PRODUCT *)current->data)->price;
+        current = current->next;
+    }
+    return totalPrice;
 }

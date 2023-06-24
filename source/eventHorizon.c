@@ -67,6 +67,42 @@ struct List *createEventHorizon(struct List *clientList)
     return eventHorizon;
 }
 
+void addSingleClient(struct List *eventHorizon, struct List *productList, struct List *clientList, int arrivalTime)
+{
+    struct List *current = copyList(clientList);
+    int randomClient = rand() % clientList->size;
+    CLIENT *client = NULL;
+    for (int j = 0; j < randomClient; j++)
+    {
+        current->head = current->head->next;
+    }
+    while (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) != NULL)
+    {
+        if (current->head->next == NULL)
+        {
+            break;
+        }
+        else
+        {
+            current->head = current->head->next;
+        }
+    }
+    if (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) != NULL)
+    {
+        client = addSingleClientToClientList(clientList, productList);
+    }
+    if (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) == NULL || client)
+    {
+        struct Event *arrival = (struct Event *)malloc(sizeof(struct Event));
+        arrival->client = (struct Client *)current->head->data;
+        arrival->type = 0;
+        int time = arrivalTime + rand() % 300;
+        arrival->time = time > 43200 ? arrivalTime : time;
+        addToMiddle(eventHorizon, arrival, *compareTimes);
+        free(current);
+    }
+}
+
 void writeLineToTxt(char line[])
 {
     char caracter = 0;
