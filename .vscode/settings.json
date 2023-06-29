@@ -1,6 +1,7 @@
 {
   "files.associations": {
-    "genericlist.h": "c"
+    "genericlist.h": "c",
+    "stdio.h": "c"
   },
   "C_Cpp.default.compilerPath": "C:\\MinGW\\bin\\gcc.exe"
 }

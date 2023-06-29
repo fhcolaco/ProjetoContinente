@@ -7,49 +7,48 @@ struct List *createCheckoutList()
     return createList();
 }
 
-int compareCheckout(void *data, void *data2)
+int compareCheckout(struct List *list)
 {
-    CHECKOUT *checkout = (CHECKOUT *)data;
-    CHECKOUT *checkout2 = (CHECKOUT *)data2;
-    if (checkout == NULL || checkout2 == NULL)
+    struct Node *current = list->head;
+    int i = 1;
+    while (current)
     {
-        return 0;
+        if (((CHECKOUT *)current->data)->numCheckout == i)
+        {
+            current = current->next;
+            i++;
+        }
+        else
+        {
+            return i;
+        }
     }
-    if (checkout->numCheckout + 1 == checkout2->numCheckout)
+    if (current == NULL)
     {
-        return 0;
+        return i;
     }
-    else
+}
+
+int checkoutInTheRightPlace(CHECKOUT *data, CHECKOUT *data2)
+{
+    if (data->numCheckout > data2->numCheckout)
     {
         return 1;
     }
+    return 0;
 }
 
 void openCheckout(struct List *checkoutList, struct List *employeeList)
 {
-    CHECKOUT *checkout = NULL;
-    struct Node *aux = checkoutList->head;
-    while (aux != NULL && aux->next != NULL)
+    if (checkoutList->size < 10)
     {
-        if (compareCheckout(aux->data, aux->next->data) == 1)
-        {
-            checkout = createCheckout(((CHECKOUT *)aux->data)->numCheckout + 1, employeeList);
-            addToMiddle(checkoutList, checkout, *compareCheckout);
-            break;
-        }
-        else
-        {
-            aux = aux->next;
-        }
+        CHECKOUT *checkout = NULL;
+        checkout = createCheckout(compareCheckout(checkoutList), employeeList);
+        addToMiddle(checkoutList, checkout, *checkoutInTheRightPlace);
+        char sentence[100];
+        sprintf(sentence, "CHECKOUT %d OPENED", checkout->numCheckout);
+        writeLineToTxt(sentence);
     }
-    if (aux == NULL || aux->next == NULL || checkoutList->size < 2)
-    {
-        checkout = createCheckout(checkoutList->size + 1, employeeList);
-        addToBackOfList(checkoutList, checkout);
-    }
-    char sentence[100];
-    sprintf(sentence, "CHECKOUT %d OPENED", checkout->numCheckout);
-    writeLineToTxt(sentence);
 }
 
 void closeCheckout(struct List *checkoutList, struct Checkout *checkout)
@@ -157,40 +156,40 @@ void printCheckoutList(struct List *checkoutList)
 {
     int maxCheckout = MAX_CHECKOUTS;
     struct Node *current = checkoutList->head;
-    // int i = 1;
-    // while (current != NULL && i <= 25)
-    // {
-    //     // CHECKOUT *checkout = current->data;
-    //     // if (checkout->numCheckout == i)
-    //     // {
-    //     //     printf("\nCaixa %d [%s]: Aberta", checkout->numCheckout, checkout->employee->name);
-    //     //     i++;
-    //     //     current = current->next;
-    //     // }
-    //     // else
-    //     // {
-    //     //     printf("\nCaixa %d: Fechada", i);
-    //     //     i++;
-    //     // }
-
-    //     while (((CHECKOUT *)current->data)->numCheckout != i && i <= 25)
-    //     {
-    //         printf("\nCaixa %d: Fechada", i);
-    //         i++;
-    //     }
-    //     printf("\nCaixa %d [%s]: Aberta", i, ((CHECKOUT *)current->data)->employee->name);
-    //     i++;
-    //     current = current->next;
-    // }
-    // while (i <= 9)
-    // {
-    //     printf("\nCaixa %d: Fechada", i);
-    //     i++;
-    // }
-
-    while (current != NULL)
+    int i = 1;
+    while (current != NULL && i <= 25)
     {
-        printf("\nCaixa %d [%s]: Aberta", ((CHECKOUT *)current->data)->numCheckout, ((CHECKOUT *)current->data)->employee->name);
+        //     // CHECKOUT *checkout = current->data;
+        //     // if (checkout->numCheckout == i)
+        //     // {
+        //     //     printf("\nCaixa %d [%s]: Aberta", checkout->numCheckout, checkout->employee->name);
+        //     //     i++;
+        //     //     current = current->next;
+        //     // }
+        //     // else
+        //     // {
+        //     //     printf("\nCaixa %d: Fechada", i);
+        //     //     i++;
+        //     // }
+
+        while (((CHECKOUT *)current->data)->numCheckout != i && i <= 25)
+        {
+            printf("\nCaixa %d: Fechada", i);
+            i++;
+        }
+        printf("\nCaixa %d [%s]: Aberta", i, ((CHECKOUT *)current->data)->employee->name);
+        i++;
         current = current->next;
     }
+    while (i <= 9)
+    {
+        printf("\nCaixa %d: Fechada", i);
+        i++;
+    }
+
+    // while (current != NULL)
+    // {
+    //     printf("\nCaixa %d [%s]: Aberta", ((CHECKOUT *)current->data)->numCheckout, ((CHECKOUT *)current->data)->employee->name);
+    //     current = current->next;
+    // }
 }
