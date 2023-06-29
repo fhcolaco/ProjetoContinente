@@ -240,6 +240,7 @@ int main(void)
         {
             // Finish searching for products and enter a queue
             checkStatusOfCheckouts(checkoutList, employeeList);
+
             CHECKOUT *checkout = chooseCheckout(checkoutList);
             if (checkout == NULL)
             {
