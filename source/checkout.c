@@ -1,10 +1,11 @@
 #include "checkout.h"
+#include "employee.h"
 
 CHECKOUT *createCheckout(int numCheckout, struct List *employeeList)
 {
     CHECKOUT *checkout = (CHECKOUT *)malloc(sizeof(CHECKOUT));
     checkout->numCheckout = numCheckout;
-    checkout->employee = NULL;
+    checkout->employee = chooseRandomEmployee(employeeList);
     checkout->queue = createList();
     checkout->servingClient = NULL;
     checkout->closing = 0;

@@ -11,6 +11,7 @@ debug: $(OBJS)
 	$(DB) continente
 
 continente: $(OBJS)
+	chcp 65001
 	$(CC) $(CFLAGS) $(OBJS) -o $@
 
 build/%.o: source/%.c $(DEPS)

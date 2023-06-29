@@ -57,18 +57,15 @@ struct List *createEmployeeList()
 
 EMPLOYEE *chooseRandomEmployee(struct List *employeeList)
 {
-    int randomEmployee = rand() % employeeList->size;
+    int randomEmployee = rand() % (employeeList->size / 2);
     struct Node *current = employeeList->head;
     for (int i = 0; i < randomEmployee; i++)
     {
         current = current->next;
     }
-    while (((EMPLOYEE *)current->data)->isWorking == true && current->data != NULL)
+    while (((EMPLOYEE *)current->data)->isWorking == true && current != NULL)
     {
-        for (int i = 0; i < randomEmployee; i++)
-        {
-            current = current->next;
-        }
+        current = current->next;
     }
     if (current->data == NULL)
     {

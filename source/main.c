@@ -34,7 +34,9 @@ int main(void)
     fclose(txt);
     char sentence[100];
     char ch;
-    int numberOfClients = 0;
+    int numberOfClientsInStore = 0;
+    int numberOfClientsServed = 0;
+    int numberOfProcesEvents = 0;
     float totalCash = 0;
     while (eventHorizon->head != NULL)
     {
@@ -43,7 +45,7 @@ int main(void)
         if (kbhit())
         {
             ch = getch();
-            while (ch != 'q' || ch != 'Q')
+            do
             {
                 ch = '\0';
                 printMenuInSimulation(event->time);
@@ -68,11 +70,159 @@ int main(void)
                     printf("\nA voltar à simulação.\n");
                     break;
                 }
-                else if (ch == 'm' || ch == 'M')
+                else if (ch == '1')
                 {
-                    printMenuInSimulation(event->time);
+                    do
+                    {
+                        ch = '\0';
+                        printMenuInSimulationClient(numberOfClientsInStore);
+                        while (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '0')
+                        {
+                            if (kbhit)
+                            {
+                                ch = getch();
+                                if (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '0')
+                                {
+                                    printf("\nOpção inválida.\nPrima M para apresentar o menu.");
+                                }
+                                else
+                                {
+                                    switch (ch)
+                                    {
+                                    case '1':
+                                        char id[5];
+                                        printf("Consultar se um cliente está na loja\nQual o ID do cliente que pretende consultar? ");
+                                        scanf("%s", &id);
+                                        if (atoi(id) == 0)
+                                        {
+                                            printf("O ID introduzido não é válido.\n");
+                                            break;
+                                        }
+                                        CLIENT *client = checkIfClientExists(eventHorizon, atoi(id));
+                                        if (client != NULL)
+                                        {
+                                            printf("O cliente %d %s está na loja.\n", client->id, client->name);
+                                        }
+                                        else
+                                        {
+                                            printf("O cliente não está na loja.\n");
+                                        }
+                                        printf("\nPrima ENTER para continuar.");
+                                        getchar();
+                                        break;
+                                    case '2':
+                                        printf("Mudar um cliente de fila\n");
+                                        break;
+                                    case '0':
+                                        printf("A voltar ao menu anterior.\n");
+                                        break;
+                                    default:
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if (ch == 'q' || ch == 'Q')
+                        {
+                            printf("\nA voltar à simulação.\n");
+                            break;
+                        }
+                    } while (ch != 'q' && ch != 'Q' && ch != '0');
                 }
-            }
+                else if (ch == '2')
+                {
+                    do
+                    {
+                        ch = '\0';
+                        printMenuInSimulationCheckout(checkoutList->size);
+                        while (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '0')
+                        {
+                            if (kbhit)
+                            {
+                                ch = getch();
+                                if (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '0')
+                                {
+                                    printf("\nOpção inválida.\nPrima M para apresentar o menu.");
+                                }
+                                else
+                                {
+                                    switch (ch)
+                                    {
+                                    case '1':
+                                        printf("Consultar estado das caixas\n");
+                                        printCheckoutList(checkoutList);
+                                        break;
+                                    case '2':
+                                        printf("Abrir uma caixa\n");
+                                        break;
+                                    case '3':
+                                        printf("Fechar uma caixa\n");
+                                        break;
+                                    case '0':
+                                        printf("A voltar ao menu anterior.\n");
+                                        break;
+                                    default:
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if (ch == 'q' || ch == 'Q')
+                        {
+                            printf("\nA voltar à simulação.\n");
+                            break;
+                        }
+                    } while (ch != 'q' && ch != 'Q' && ch != '0');
+                }
+                else if (ch == '3')
+                {
+                    do
+                    {
+                        ch = '\0';
+                        printMenuInSimulationStatistics(checkoutList->size);
+                        while (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '0')
+                        {
+                            if (kbhit)
+                            {
+                                ch = getch();
+                                if (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '0')
+                                {
+                                    printf("\nOpção inválida.\nPrima M para apresentar o menu.");
+                                }
+                            }
+                        }
+                        if (ch == 'q' || ch == 'Q')
+                        {
+                            printf("\nA voltar à simulação.\n");
+                            break;
+                        }
+                    } while (ch != 'q' && ch != 'Q' && ch != '0');
+                }
+                else if (ch == '4')
+                {
+                    do
+                    {
+                        ch = '\0';
+                        printMenuInSimulationEvents(numberOfProcesEvents);
+                        while (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '0')
+                        {
+                            if (kbhit)
+                            {
+                                ch = getch();
+                                if (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '0')
+                                {
+                                    printf("\nOpção inválida.\nPrima M para apresentar o menu.");
+                                }
+                            }
+                        }
+                        if (ch == 'q' || ch == 'Q')
+                        {
+                            printf("\nA voltar à simulação.\n");
+                            break;
+                        }
+                    } while (ch != 'q' && ch != 'Q' && ch != '0');
+                }
+            } while (ch != 'q' && ch != 'Q');
         }
         if (event->type == 0)
         {
@@ -83,6 +233,7 @@ int main(void)
             newEvent->client = event->client;
             newEvent->type = 1;
             newEvent->time = event->time + calculateTotalTimeInStore(event->client);
+            numberOfClientsInStore++;
             addToMiddle(eventHorizon, newEvent, *compareTimes);
         }
         else if (event->type == 1)
@@ -109,6 +260,7 @@ int main(void)
                 addToMiddle(eventHorizon, newEvent, *compareTimes);
             }
         }
+
         else if (event->type == 2)
         {
             // Start being served
@@ -150,7 +302,8 @@ int main(void)
             {
                 sprintf(sentence, "%s : Cliente %d terminou de ser atendido da caixa %d e saiu da loja.", instanceToTime(event->time), event->client->id, checkout->numCheckout, event->time);
                 writeLineToTxt(sentence);
-                numberOfClients++;
+                numberOfClientsInStore--;
+                numberOfClientsServed++;
                 totalCash += calculateTotalPrice(event->client);
                 removeServingClient(checkout);
                 if (checkout->servingClient == NULL && checkout->queue->head != NULL)
@@ -163,8 +316,9 @@ int main(void)
                 }
             }
         }
-        int chance = rand() % 10; // Get a client with a 20% chance
-        if (((EVENT *)eventHorizon->head->data)->time < 43200 && clientList->size != 0 && (chance < 2 || eventHorizon->size <= 10))
+        numberOfProcesEvents++;
+        int chance = rand() % 100; // Get a client with a 5% chance
+        if (((EVENT *)eventHorizon->head->data)->time < 43200 && clientList->size != 0 && (chance < 5 || eventHorizon->size <= 10))
         {
             addSingleClient(eventHorizon, productList, clientList, ((EVENT *)eventHorizon->head->data)->time);
         }
@@ -191,11 +345,11 @@ int main(void)
     destroyList(employeeList);
     destroyList(clientList);
     destroyList(productList);
-    sprintf(sentence, "A loja fechou com %d clientes atendidos.", numberOfClients);
+    sprintf(sentence, "A loja fechou com %d clientes atendidos.", numberOfClientsServed);
     writeLineToTxt(sentence);
     sprintf(sentence, "A loja fechou com %.2f€ de lucro.", totalCash);
     writeLineToTxt(sentence);
-    printf("\nNúmero de clientes atendidos: %d\n", numberOfClients);
+    printf("\nNúmero de clientes atendidos: %d\n", numberOfClientsServed);
     printf("Lucro total: %.2f€\n", totalCash);
     printf("\n\33[0;32mSimulação terminada com sucesso!\nObrigado por ter escolhido o Continente.\n\tOnde a sua satisfação é a nossa prioridade, menos nas ilhas\n\33[0;97m");
     return 0;
