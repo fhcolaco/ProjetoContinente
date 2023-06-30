@@ -51,11 +51,8 @@ CHECKOUT *chooseCheckout(struct List *checkoutList)
     while (current && checkoutList->size > 1)
     {
         if (((CHECKOUT *)current->data)->queue->size < checkout->queue->size)
-        {
-
             if (((CHECKOUT *)current->data)->closing == 0)
                 checkout = current->data;
-        }
         current = current->next;
     }
     return checkout;
@@ -63,25 +60,21 @@ CHECKOUT *chooseCheckout(struct List *checkoutList)
 
 CHECKOUT *findCheckout(struct List *checkoutList, CLIENT *client)
 {
-    struct List *aux = copyList(checkoutList);
-    for (int i = 0; i < aux->size; i++)
+    struct Node *current = checkoutList->head;
+    while (current)
     {
-        struct List *aux2 = copyList(((CHECKOUT *)aux->head->data)->queue);
-        for (int j = 0; j < aux2->size; j++)
+        struct Node *currentQ = ((CHECKOUT *)current->data)->queue->head;
+        while (currentQ)
         {
-            if (((CLIENT *)aux2->head->data)->id == client->id)
+            if (((CLIENT *)currentQ->data)->id == client->id)
             {
-                CHECKOUT *checkout = aux->head->data;
-                free(aux2);
-                free(aux);
+                CHECKOUT *checkout = currentQ->data;
                 return checkout;
             }
-            aux2->head = aux2->head->next;
+            currentQ = currentQ->data;
         }
-        free(aux2);
-        aux->head = aux->head->next;
+        current = current->next;
     }
-    free(aux);
     return NULL;
 }
 

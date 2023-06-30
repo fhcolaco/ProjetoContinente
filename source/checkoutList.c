@@ -40,7 +40,8 @@ int checkoutInTheRightPlace(CHECKOUT *data, CHECKOUT *data2)
 
 void openCheckout(struct List *checkoutList, struct List *employeeList)
 {
-    if (checkoutList->size < 10)
+    int maxCheckouts = MAX_CHECKOUTS;
+    if (checkoutList->size < maxCheckouts)
     {
         CHECKOUT *checkout = NULL;
         checkout = createCheckout(compareCheckout(checkoutList), employeeList);
@@ -122,32 +123,35 @@ void checkStatusOfCheckouts(struct List *checkoutList, struct List *employeeList
             averageClientsPerCheckout += ((CHECKOUT *)aux->head->data)->queue->size;
             nextNode(aux);
         }
-        averageClientsPerCheckout /= checkoutList->size;
         free(aux);
-        if (averageClientsPerCheckout > 5)
+        if (checkoutList->size != 0)
         {
-            openCheckout(checkoutList, employeeList);
-        }
-        else if (averageClientsPerCheckout < 2 && checkoutList->size > 1)
-        {
-            CHECKOUT *checkout = checkoutWithLeastClients(checkoutList);
-            if (checkout->queue->size == 0 && checkout->servingClient == NULL)
+            averageClientsPerCheckout /= checkoutList->size;
+            if (averageClientsPerCheckout > 5)
             {
-                closeCheckout(checkoutList, checkout);
+                openCheckout(checkoutList, employeeList);
             }
-            else
+            else if (averageClientsPerCheckout < 2 && checkoutList->size > 1)
             {
-                checkout->closing = 1;
+                CHECKOUT *checkout = checkoutWithLeastClients(checkoutList);
+                if (checkout->queue->size == 0 && checkout->servingClient == NULL)
+                {
+                    closeCheckout(checkoutList, checkout);
+                }
+                else
+                {
+                    checkout->closing = 1;
+                }
+                // CHECKOUT *checkout = checkoutList->tail->data;
+                // if (checkout->queue->size == 0 && checkout->servingClient == NULL)
+                // {
+                //     closeCheckout(checkoutList, checkout);
+                // }
+                // else
+                // {
+                //     checkout->closing = 1;
+                // }
             }
-            // CHECKOUT *checkout = checkoutList->tail->data;
-            // if (checkout->queue->size == 0 && checkout->servingClient == NULL)
-            // {
-            //     closeCheckout(checkoutList, checkout);
-            // }
-            // else
-            // {
-            //     checkout->closing = 1;
-            // }
         }
     }
 }
@@ -192,4 +196,22 @@ void printCheckoutList(struct List *checkoutList)
     //     printf("\nCaixa %d [%s]: Aberta", ((CHECKOUT *)current->data)->numCheckout, ((CHECKOUT *)current->data)->employee->name);
     //     current = current->next;
     // }
+}
+
+CHECKOUT *findCheckoutByNumCheckout(struct List *checkoutList, int numCheckout)
+{
+    struct Node *current = checkoutList->head;
+    while (current)
+    {
+        CHECKOUT *checkout = current->data;
+        if (checkout->numCheckout == numCheckout)
+        {
+            return checkout;
+        }
+        else
+        {
+            return NULL;
+        }
+        current = current->next;
+    }
 }

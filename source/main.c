@@ -154,9 +154,14 @@ int main(void)
                                         break;
                                     case '2':
                                         printf("Abrir uma caixa\n");
+                                        openCheckout(checkoutList, employeeList);
                                         break;
                                     case '3':
-                                        printf("Fechar uma caixa\n");
+                                        printf("Fechar uma caixa\nQual o número da caixa que pretende fechar? ");
+                                        int checkoutNumber;
+                                        scanf("%d", &checkoutNumber);
+                                        CHECKOUT *checkout = findCheckout(checkoutList, checkoutNumber);
+                                        closeCheckout(checkoutList, checkout);
                                         break;
                                     case '0':
                                         printf("A voltar ao menu anterior.\n");
@@ -240,7 +245,6 @@ int main(void)
         {
             // Finish searching for products and enter a queue
             checkStatusOfCheckouts(checkoutList, employeeList);
-
             CHECKOUT *checkout = chooseCheckout(checkoutList);
             if (checkout == NULL)
             {

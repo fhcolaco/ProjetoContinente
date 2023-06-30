@@ -91,7 +91,7 @@ void printMenuInSimulationCheckout(int numberOfCheckouts)
     printf("\nVersão Caixa");
     int max = MAX_CHECKOUTS;
     printf("\nNumero de caixas abertas: %d/%d", numberOfCheckouts, max);
-    printf("\n\n1 - Consultar estado das caixas (Implementado mas não testado)");
+    printf("\n\n1 - Consultar estado das caixas");
     printf("\n2 - Abrir uma caixa (Ainda não está implementado)");
     printf("\n3 - Fechar uma caixa (Ainda não está implementado)");
     printf("\n0 - Voltar ao menu anterior");
