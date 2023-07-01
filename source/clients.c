@@ -1,6 +1,15 @@
 #include "clients.h"
-#include "genericList.h"
-#include "CONSTANTS.h"
+
+int *compareClients(void *data, void *data2)
+{
+    CLIENT *client = data;
+    CLIENT *client2 = data2;
+    if (client->id > client2->id)
+    {
+        return 1;
+    }
+    return 0;
+}
 
 PRODUCT *createProduct(int id, char *description, float price, float timeInStore, float timeInCheckOut)
 {
@@ -15,15 +24,9 @@ PRODUCT *createProduct(int id, char *description, float price, float timeInStore
 
 void *generateRandomProductList(struct Client *client, struct List *productList)
 {
-    char ch;
-    unsigned int numberOfProducts = MAX_PRODUCTS_PER_CLIENT;
-    int id;
-    char description[100];
-    float price;
-    float timeInStore;
-    float timeInCheckOut;
+    unsigned int numberOfProducts = rand() % MAX_PRODUCTS_PER_CLIENT;
     unsigned int random;
-    for (int i = 0; i < numberOfProducts + 1; i++)
+    for (int i = 0; i < numberOfProducts + 3; i++)
     {
         random = rand() % productList->size;
         struct Node *current = productList->head;
@@ -40,10 +43,18 @@ void createShoppingList(struct Client *client, struct List *productList)
     client->shoppingList = createList();
     generateRandomProductList(client, productList);
 }
+
+void changeShoppingList(struct Client *client, struct List *productList)
+{
+    free(client->shoppingList);
+    createShoppingList(client, productList);
+}
+
 CLIENT *createClient(int id, char *name, struct List *productList)
 {
     CLIENT *client = (struct Client *)malloc(sizeof(struct Client));
     client->id = id;
+    client->inStore = 0;
     strcpy(client->name, name);
     createShoppingList(client, productList);
     return client;
@@ -67,7 +78,7 @@ struct List *deleteClient(struct List *clientList, CLIENT *client)
     return clientList;
 };
 
-struct List *createProductList()
+struct List *createProductList(int performanceMode)
 {
     struct List *ListaProdutos = createList();
     FILE *products = fopen("produtosOriginal.txt", "r");
@@ -121,17 +132,19 @@ struct List *createProductList()
                 }
             }
             addToBackOfList(ListaProdutos, createProduct(id, description, price, timeInStore, timeInCheckOut));
+            if (performanceMode != 1)
+                printf("\33[0;32mProduct list created: %d%%\r\33[0;97m", (int)(((TOTAL_PRODUCTS) - ((TOTAL_PRODUCTS)-ListaProdutos->size)) * 100 / TOTAL_PRODUCTS) + 1);
         }
     }
-    printf("\33[0;32mProduct list created!\n\33[0;97m");
+    printf("\33[0;32mProduct list created!                        \n\33[0;97m");
     fclose(products);
     return ListaProdutos;
 }
-struct List *createClientList(struct List *productList)
+struct List *createClientList(struct List *productList, int performanceMode)
 {
     if (productList->head == NULL)
     {
-        productList = createProductList();
+        productList = createProductList(performanceMode);
     }
     struct List *clientList = createList();
     FILE *clients = fopen("clientesOriginal.txt", "r");
@@ -169,65 +182,14 @@ struct List *createClientList(struct List *productList)
                     strcpy(name, aux);
                 }
             }
-            addToBackOfList(clientList, createClient(id, name, productList));
+            addToMiddle(clientList, createClient(id, name, productList), *compareClients);
+            if (performanceMode != 1)
+                printf("\33[0;32mClient list created: %d%%\r\33[0;97m", (int)((TOTAL_CLIENTS - (TOTAL_CLIENTS - clientList->size)) * 100 / TOTAL_CLIENTS) + 1);
         }
     }
-    printf("\33[0;32mClient list created!\n\33[0;97m");
+    printf("\33[0;32mClient list created!                        \n\33[0;97m");
     fclose(clients);
     return clientList;
-}
-
-CLIENT *addSingleClientToClientList(struct List *clientList, struct List *productList)
-{
-    FILE *clients = fopen("clientesOriginal.txt", "r");
-    if (clients == NULL)
-    {
-        printf("Error opening file");
-        exit(1);
-    }
-    else
-    {
-        char ch = 0;
-        int id;
-        char name[50];
-        int exists = 0;
-        while (ch != EOF)
-        {
-            name[0] = 0;
-            ch = '\0';
-            for (int i = 0; i < 2; i++)
-            {
-                char aux[50] = "\0";
-                ch = fgetc(clients);
-                while (ch != '\t' && ch != '\n' && ch != EOF)
-                {
-                    strncat(aux, &ch, 1);
-                    ch = fgetc(clients);
-                }
-                if (i == 0)
-                {
-                    id = atoi(aux);
-                }
-                if (i == 1)
-                {
-                    strcpy(name, aux);
-                }
-            }
-            for (int i = 0; i < clientList->size; i++)
-            {
-                if (((CLIENT *)clientList->head->data)->id == id)
-                {
-                    exists = 1;
-                }
-            }
-            if (exists == 0)
-            {
-                CLIENT *client = createClient(id, name, productList);
-                addToBackOfList(clientList, client);
-                return client;
-            }
-        }
-    }
 }
 
 void printProduct(PRODUCT *product)
@@ -250,6 +212,11 @@ void printShoppingList(struct Client *client)
         printf("\t%d\t%s\t%f\t%f\t%f\n", ((PRODUCT *)current->data)->id, ((PRODUCT *)current->data)->description, ((PRODUCT *)current->data)->price, ((PRODUCT *)current->data)->timeInStore, ((PRODUCT *)current->data)->timeInCheckOut);
         current = current->next;
     }
+}
+
+int checkIfClientIsInStore(CLIENT *client)
+{
+    return client->inStore;
 }
 
 float calculateTotalTimeInStore(struct Client *client)
@@ -298,4 +265,18 @@ float calculateTotalPrice(struct Client *client)
         current = current->next;
     }
     return totalPrice;
+}
+
+int checkIfClientExistsInClientList(struct List *clientList, int id)
+{
+    struct Node *current = clientList->head;
+    while (current)
+    {
+        if (((CLIENT *)current->data)->id == id)
+        {
+            return 1;
+        }
+        current = current->next;
+    }
+    return 0;
 }

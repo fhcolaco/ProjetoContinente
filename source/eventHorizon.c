@@ -1,105 +1,130 @@
 #include "eventHorizon.h"
 
-int compareTimes(struct Event *data, struct Event *data2)
+int compareTimes(void *data, void *data2)
 {
-    if (data->time > data2->time)
+    struct Event *event = data;
+    struct Event *event2 = data2;
+    if (event->time >= event2->time)
     {
         return 1;
     }
     return 0;
 }
 
-CLIENT *checkIfClientExists(struct List *eventHorizon, int id)
+CLIENT *checkIfClientExists(struct List *eventHorizon, CLIENT *client)
 {
-    struct Node *current = eventHorizon->head;
-    for (int i = 0; i < eventHorizon->size; i++)
+    struct Node *start = eventHorizon->head;
+    struct Node *end = eventHorizon->tail;
+    while (start != end && start->next != end)
     {
-        struct Event *event = (struct Event *)current->data;
-        if (event->client->id == id)
+        struct Event *event = start->data;
+        struct Event *event2 = end->data;
+        if (((CLIENT *)event->client)->id == client->id)
         {
             return event->client;
         }
-        current = current->next;
+        if (((CLIENT *)event2->client)->id == client->id)
+        {
+            return event2->client;
+        }
+        start = start->next;
+        end = end->previous;
     }
     return NULL;
 }
 
-struct List *createEventHorizon(struct List *clientList)
+EVENT *findEventByClientId(struct List *eventHorizon, int id)
 {
-    printf("Creating event horizon...\n");
-    struct List *eventHorizon = createList();
-    unsigned int t = 0;
-    int numberOfClients = rand() % 4000 + 3000;
-    int randomClient = 0;
-    for (int i = numberOfClients; i != 0; i--)
+    struct Node *currentStart = eventHorizon->head;
+    struct Node *currentEnd = eventHorizon->tail;
+    while (currentStart != currentEnd && currentStart->next != currentEnd)
     {
-        struct List *current = copyList(clientList);
-        randomClient = rand() % clientList->size;
+        struct Event *event = currentStart->data;
+        struct Event *event2 = currentEnd->data;
+        if (event->client->id == id)
+        {
+            return event;
+        }
+        if (event2->client->id == id)
+        {
+            return event2;
+        }
+        currentStart = currentStart->next;
+        currentEnd = currentEnd->previous;
+    }
+    return NULL;
+}
+
+struct List *createEventHorizon(struct List *clientList, int performanceMode)
+{
+    printf("Creating event horizon...                    \n");
+    struct List *eventHorizon = createList();
+    int numberOfClients = rand() % 4000 + 3000;
+    for (int i = numberOfClients; i != 0; --i)
+    {
+        CLIENT *client = NULL;
+        struct Node *current = clientList->head;
+        int randomClient = rand() % clientList->size;
         for (int j = 0; j < randomClient; j++)
         {
-            current->head = current->head->next;
+            current = current->next;
         }
-        while (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) != NULL)
+        while (current && client == NULL)
         {
-            if (current->head->next == NULL)
+            if (((CLIENT *)current->data)->inStore == 0)
             {
-                i++;
-                break;
+                client = current->data;
             }
             else
-            {
-                current->head = current->head->next;
-            }
+                current = current->next;
         }
-        if (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) == NULL)
+        if (client && client->inStore == 0)
         {
             struct Event *arrival = (struct Event *)malloc(sizeof(struct Event));
-            t = rand() % 43200;
-            arrival->client = (struct Client *)current->head->data;
+            client->inStore = 1;
+            arrival->client = client;
             arrival->type = 0;
-            arrival->time = t;
+            arrival->time = rand() % 43200;
             addToMiddle(eventHorizon, arrival, *compareTimes);
-            free(current);
+            if (performanceMode != 1)
+                printf("\33[0;32mEvent horizon created: %d%%\r\33[0;97m", (int)((numberOfClients - i) * 100 / numberOfClients) + 1);
+        }
+        else
+        {
+            i++;
         }
     }
 
-    printf("\33[0;32mEvent horizon created.\n\33[0;97m");
+    printf("\33[0;32mEvent horizon created.                          \n\33[0;97m");
     return eventHorizon;
 }
 
 void addSingleClient(struct List *eventHorizon, struct List *productList, struct List *clientList, int arrivalTime)
 {
-    struct List *current = copyList(clientList);
-    int randomClient = rand() % clientList->size;
     CLIENT *client = NULL;
+    struct Node *current = clientList->head;
+    int randomClient = rand() % clientList->size;
     for (int j = 0; j < randomClient; j++)
     {
-        current->head = current->head->next;
+        current = current->next;
     }
-    while (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) != NULL)
+    while (current && client == NULL)
     {
-        if (current->head->next == NULL)
+        if (((CLIENT *)current->data)->inStore == 0)
         {
-            break;
+            client = current->data;
         }
         else
-        {
-            current->head = current->head->next;
-        }
+            current = current->next;
     }
-    if (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) != NULL)
-    {
-        client = addSingleClientToClientList(clientList, productList);
-    }
-    if (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) == NULL || client)
+    if (client && client->inStore == 0 && client->id != ((EVENT *)eventHorizon->head->data)->client->id)
     {
         struct Event *arrival = (struct Event *)malloc(sizeof(struct Event));
-        arrival->client = (struct Client *)current->head->data;
+        client->inStore = 1;
+        arrival->client = client;
         arrival->type = 0;
-        int time = arrivalTime + rand() % 300;
-        arrival->time = time > 43200 ? arrivalTime : time;
+        arrival->time = rand() % 43200;
         addToMiddle(eventHorizon, arrival, *compareTimes);
-        free(current);
     }
 }
 
@@ -122,4 +147,41 @@ void printEvent(EVENT *event)
     else if (event->type == 2)
         printf("Type: Pay and leave\n");
     printf("Time: %d\n", event->time);
+}
+
+int averageTimeInQueue(struct List *eventHorizon)
+{
+
+    int sum = 0;
+    int numberOfClients = 0;
+
+    struct Node *current = eventHorizon->head;
+    EVENT *event = (EVENT *)current->data;
+
+    while (current)
+    {
+        CLIENT *client = (CLIENT *)malloc(sizeof(CLIENT));
+
+        if (event->type == 1)
+        {
+            client = event->client;
+
+            struct Node *current2 = current->next;
+            EVENT *event2 = (EVENT *)current2->data;
+
+            while (event2)
+            {
+                if (event2->type == 2 && event2->client->id == client->id)
+                {
+                    numberOfClients++;
+                    sum += event2->time - event->time;
+                    break;
+                }
+                current2 = current2->next;
+            }
+        }
+        current = current->next;
+    }
+
+    return sum / numberOfClients;
 }

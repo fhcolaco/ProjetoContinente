@@ -1,6 +1,4 @@
 #include "checkoutList.h"
-#include "genericList.h"
-#include "CONSTANTS.h"
 
 struct List *createCheckoutList()
 {
@@ -29,9 +27,11 @@ int compareCheckout(struct List *list)
     }
 }
 
-int checkoutInTheRightPlace(CHECKOUT *data, CHECKOUT *data2)
+int checkoutInTheRightPlace(void *data, void *data2)
 {
-    if (data->numCheckout > data2->numCheckout)
+    CHECKOUT *checkout = data;
+    CHECKOUT *checkout2 = data2;
+    if (checkout->numCheckout > checkout2->numCheckout)
     {
         return 1;
     }
@@ -50,34 +50,50 @@ void openCheckout(struct List *checkoutList, struct List *employeeList)
         sprintf(sentence, "CHECKOUT %d OPENED", checkout->numCheckout);
         writeLineToTxt(sentence);
     }
+    else
+    {
+        printf("Maximum number of checkouts reached\n");
+    }
 }
 
-void closeCheckout(struct List *checkoutList, struct Checkout *checkout)
+int closeCheckout(struct List *checkoutList, struct Checkout *checkout)
 {
-    struct Node *current = checkoutList->head;
-    struct Node *previous = NULL;
-    while (current != NULL && current->data != checkout)
+    if (checkout->closing == 0)
     {
-        previous = current;
-        current = current->next;
-    }
-    if (previous == NULL)
-    {
-        checkoutList->head = current->next;
-    }
-    else if (current == checkoutList->tail)
-    {
-        checkoutList->tail = previous;
-        previous->next = NULL;
+        checkout->closing = 1;
+        return 1;
     }
     else
     {
-        previous->next = current->next;
+        if (checkout->queue->size > 0 || checkout->servingClient != NULL)
+            return 2;
+        struct Node *current = checkoutList->head;
+        struct Node *previous = NULL;
+        ((EMPLOYEE *)checkout->employee)->isWorking = false;
+        while (current != NULL && current->data != checkout)
+        {
+            previous = current;
+            current = current->next;
+        }
+        if (previous == NULL)
+        {
+            checkoutList->head = current->next;
+        }
+        else if (current == checkoutList->tail)
+        {
+            checkoutList->tail = previous;
+            previous->next = NULL;
+        }
+        else
+        {
+            previous->next = current->next;
+        }
+        char sentence[100];
+        sprintf(sentence, "CHECKOUT %d CLOSED", checkout->numCheckout);
+        writeLineToTxt(sentence);
+        checkoutList->size--;
+        return 0;
     }
-    checkoutList->size--;
-    char sentence[100];
-    sprintf(sentence, "CHECKOUT %d CLOSED", checkout->numCheckout);
-    writeLineToTxt(sentence);
 }
 
 CHECKOUT *checkoutWithLeastClients(struct List *checkoutList)
@@ -104,9 +120,9 @@ void checkStatusOfCheckouts(struct List *checkoutList, struct List *employeeList
     }
     else
     {
-        for (int i = 0; i < checkoutList->size; i++)
+        struct Node *aux = checkoutList->head;
+        while (aux && checkoutList->size > 1)
         {
-            struct Node *aux = checkoutList->head;
             if (((CHECKOUT *)aux->data)->closing == 1)
             {
                 if (((CHECKOUT *)aux->data)->queue->size == 0 && ((CHECKOUT *)aux->data)->servingClient == NULL)
@@ -115,19 +131,19 @@ void checkStatusOfCheckouts(struct List *checkoutList, struct List *employeeList
                     free(aux->data);
                 }
             }
+            aux = aux->next;
         }
         int averageClientsPerCheckout = 0;
-        struct List *aux = copyList(checkoutList);
+        aux = checkoutList->head;
         for (int i = 0; i < checkoutList->size; i++)
         {
-            averageClientsPerCheckout += ((CHECKOUT *)aux->head->data)->queue->size;
-            nextNode(aux);
+            averageClientsPerCheckout += ((CHECKOUT *)aux->data)->queue->size;
+            aux = aux->next;
         }
-        free(aux);
         if (checkoutList->size != 0)
         {
             averageClientsPerCheckout /= checkoutList->size;
-            if (averageClientsPerCheckout > 5)
+            if (averageClientsPerCheckout > 5 && checkoutList->size < MAX_CHECKOUTS)
             {
                 openCheckout(checkoutList, employeeList);
             }
@@ -142,15 +158,6 @@ void checkStatusOfCheckouts(struct List *checkoutList, struct List *employeeList
                 {
                     checkout->closing = 1;
                 }
-                // CHECKOUT *checkout = checkoutList->tail->data;
-                // if (checkout->queue->size == 0 && checkout->servingClient == NULL)
-                // {
-                //     closeCheckout(checkoutList, checkout);
-                // }
-                // else
-                // {
-                //     checkout->closing = 1;
-                // }
             }
         }
     }
@@ -163,19 +170,6 @@ void printCheckoutList(struct List *checkoutList)
     int i = 1;
     while (current != NULL && i <= 25)
     {
-        //     // CHECKOUT *checkout = current->data;
-        //     // if (checkout->numCheckout == i)
-        //     // {
-        //     //     printf("\nCaixa %d [%s]: Aberta", checkout->numCheckout, checkout->employee->name);
-        //     //     i++;
-        //     //     current = current->next;
-        //     // }
-        //     // else
-        //     // {
-        //     //     printf("\nCaixa %d: Fechada", i);
-        //     //     i++;
-        //     // }
-
         while (((CHECKOUT *)current->data)->numCheckout != i && i <= 25)
         {
             printf("\nCaixa %d: Fechada", i);
@@ -190,12 +184,6 @@ void printCheckoutList(struct List *checkoutList)
         printf("\nCaixa %d: Fechada", i);
         i++;
     }
-
-    // while (current != NULL)
-    // {
-    //     printf("\nCaixa %d [%s]: Aberta", ((CHECKOUT *)current->data)->numCheckout, ((CHECKOUT *)current->data)->employee->name);
-    //     current = current->next;
-    // }
 }
 
 CHECKOUT *findCheckoutByNumCheckout(struct List *checkoutList, int numCheckout)
@@ -208,10 +196,7 @@ CHECKOUT *findCheckoutByNumCheckout(struct List *checkoutList, int numCheckout)
         {
             return checkout;
         }
-        else
-        {
-            return NULL;
-        }
         current = current->next;
     }
+    return NULL;
 }

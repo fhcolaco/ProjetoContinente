@@ -14,30 +14,34 @@ void addToMiddle(struct List *list, void *data, int (*compare)(void *, void *))
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
     new_node->data = data;
     new_node->next = NULL;
+    new_node->previous = NULL;
     if (list->head == NULL)
     {
         list->head = new_node;
         list->tail = new_node;
     }
+    else if (compare(list->head->data, data) == 1)
+    {
+        new_node->next = list->head;
+        new_node->next->previous = new_node;
+        list->head = new_node;
+    }
     else
     {
         struct Node *current = list->head;
-        struct Node *previous = NULL;
-        while (current != NULL && compare(current->data, data) == 0)
+        while (current->next && compare(current->next->data, data) == 0)
         {
-            previous = current;
             current = current->next;
         }
-        if (previous == NULL)
+        new_node->next = current->next;
+        if (current->next)
         {
-            new_node->next = list->head;
-            list->head = new_node;
+            new_node->next->previous = new_node;
         }
-        else
-        {
-            previous->next = new_node;
-            new_node->next = current;
-        }
+        if (current == list->tail)
+            list->tail = new_node;
+        current->next = new_node;
+        new_node->previous = current;
     }
     list->size++;
 }
@@ -47,6 +51,7 @@ void addToBackOfList(struct List *list, void *data)
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
     new_node->data = data;
     new_node->next = NULL;
+    new_node->previous = NULL;
     if (list->head == NULL)
     {
         list->head = new_node;
@@ -55,6 +60,7 @@ void addToBackOfList(struct List *list, void *data)
     else
     {
         list->tail->next = new_node;
+        new_node->previous = list->tail;
         list->tail = new_node;
     }
     list->size++;
@@ -66,7 +72,7 @@ struct Node *findMiddle(struct Node *start, struct Node *end)
         return NULL;
     struct Node *slow = start;
     struct Node *fast = start->next;
-    while (fast != end)
+    while (fast && fast != end)
     {
         fast = fast->next;
         if (fast != end)
@@ -78,7 +84,7 @@ struct Node *findMiddle(struct Node *start, struct Node *end)
     return slow;
 }
 
-struct Node *findInList(struct List *list, void *data)
+struct Node *findInListBinarySearch(struct List *list, void *data)
 {
     struct Node *start = list->head;
     struct Node *end = list->tail;
@@ -90,28 +96,32 @@ struct Node *findInList(struct List *list, void *data)
         if (middle->data == data)
             return middle;
         else if (middle->data > data)
-            end = middle->next;
+            end = middle;
         else
-            start = middle->next;
+            start = middle;
     } while (end != start);
     return NULL;
 }
 
-struct Node *removeFromList(struct List *list, void *data)
+struct Node *removeFromList(struct List *list, void *data, int (*compare)(void *, void *))
 {
-    struct Node *found = findInList(list, data);
-    if (found != NULL)
+    struct Node *previous = list->head;
+    while (previous->next && compare(previous->next->data, data) == 0)
     {
-        struct Node *current = list->head;
-        while (current->next != found)
-        {
-            current = current->next;
-        }
-        current->next = found->next;
+        previous = previous->next;
+    }
+    if (previous)
+    {
+        struct Node *found = previous->next;
+        previous->next = found->next;
         list->size--;
         return found;
     }
-    return NULL;
+    else
+    {
+        printf("Element not found\n");
+        return NULL;
+    }
 }
 
 struct List *copyList(struct List *list)

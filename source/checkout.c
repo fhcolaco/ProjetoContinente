@@ -1,5 +1,4 @@
 #include "checkout.h"
-#include "employee.h"
 
 CHECKOUT *createCheckout(int numCheckout, struct List *employeeList)
 {
@@ -27,16 +26,14 @@ void removeFromCheckoutQueue(CHECKOUT *checkout)
     }
 }
 
-void addServingClient(CHECKOUT *checkout)
+int addServingClient(CHECKOUT *checkout)
 {
     if (checkout->servingClient == NULL)
     {
         checkout->servingClient = (CLIENT *)checkout->queue->head->data;
+        return 1;
     }
-    else
-    {
-        exit(1);
-    }
+    return 0;
 }
 
 void removeServingClient(CHECKOUT *checkout)
@@ -44,12 +41,22 @@ void removeServingClient(CHECKOUT *checkout)
     checkout->servingClient = NULL;
 }
 
-CHECKOUT *chooseCheckout(struct List *checkoutList)
+CHECKOUT *chooseCheckout(struct List *checkoutList, struct Client *client)
 {
     struct Node *current = checkoutList->head;
     CHECKOUT *checkout = current->data;
     while (current && checkoutList->size > 1)
     {
+        struct Node *currentQ = ((CHECKOUT *)current->data)->queue->head;
+        while (currentQ)
+        {
+            if (((CLIENT *)currentQ->data)->id == client->id)
+            {
+                checkout = current->data;
+                return NULL;
+            }
+            currentQ = currentQ->next;
+        }
         if (((CHECKOUT *)current->data)->queue->size < checkout->queue->size)
             if (((CHECKOUT *)current->data)->closing == 0)
                 checkout = current->data;
@@ -63,15 +70,15 @@ CHECKOUT *findCheckout(struct List *checkoutList, CLIENT *client)
     struct Node *current = checkoutList->head;
     while (current)
     {
-        struct Node *currentQ = ((CHECKOUT *)current->data)->queue->head;
-        while (currentQ)
+        struct Node *currentQueue = ((struct List *)((CHECKOUT *)current->data)->queue)->head;
+        while (currentQueue)
         {
-            if (((CLIENT *)currentQ->data)->id == client->id)
+            if (((CLIENT *)currentQueue->data)->id == client->id)
             {
-                CHECKOUT *checkout = currentQ->data;
+                CHECKOUT *checkout = current->data;
                 return checkout;
             }
-            currentQ = currentQ->data;
+            currentQueue = currentQueue->next;
         }
         current = current->next;
     }
@@ -80,17 +87,41 @@ CHECKOUT *findCheckout(struct List *checkoutList, CLIENT *client)
 
 CHECKOUT *findServingClient(struct List *checkoutList, CLIENT *client)
 {
-    struct List *aux = copyList(checkoutList);
-    for (int i = 0; i < aux->size; i++)
+    struct Node *current = checkoutList->head;
+    while (current)
     {
-        if (((CHECKOUT *)aux->head->data)->servingClient != NULL && ((CHECKOUT *)aux->head->data)->servingClient->id == client->id)
+        if (((CHECKOUT *)current->data)->servingClient != NULL)
         {
-            CHECKOUT *checkout = aux->head->data;
-            free(aux);
-            return checkout;
+            if (((CHECKOUT *)current->data)->servingClient->id == client->id)
+            {
+                CHECKOUT *checkout = current->data;
+                return checkout;
+            }
         }
-        aux->head = aux->head->next;
+        current = current->next;
     }
-    free(aux);
+    current = checkoutList->head;
+    while (current)
+    {
+        current = current->next;
+    }
+    return NULL;
+}
+
+CHECKOUT *findIfServingClient(struct List *checkoutList, CLIENT *client)
+{
+    struct Node *current = checkoutList->head;
+    while (current)
+    {
+        if (((CHECKOUT *)current->data)->servingClient != NULL)
+        {
+            if (((CHECKOUT *)current->data)->servingClient->id == client->id)
+            {
+                CHECKOUT *checkout = current->data;
+                return checkout;
+            }
+        }
+        current = current->next;
+    }
     return NULL;
 }
