@@ -1,12 +1,6 @@
 {
   "files.associations": {
-    "genericlist.h": "c",
-    "stdio.h": "c",
-    "eventhorizon.h": "c",
-    "stdlib.h": "c",
-    "clients.h": "c",
-    "checkout.h": "c",
-    "checkoutlist.h": "c"
+    "genericlist.h": "c"
   },
   "C_Cpp.default.compilerPath": "C:\\MinGW\\bin\\gcc.exe"
 }

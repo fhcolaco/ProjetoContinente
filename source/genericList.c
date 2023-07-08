@@ -12,6 +12,7 @@ struct List *createList()
 void addToMiddle(struct List *list, void *data, int (*compare)(void *, void *))
 {
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    int i = 0;
     new_node->data = data;
     new_node->next = NULL;
     new_node->previous = NULL;
@@ -32,6 +33,7 @@ void addToMiddle(struct List *list, void *data, int (*compare)(void *, void *))
         while (current->next && compare(current->next->data, data) == 0)
         {
             current = current->next;
+            i++;
         }
         new_node->next = current->next;
         if (current->next)

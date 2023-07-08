@@ -1,8 +1,11 @@
-#ifndef EVENTHORIZON_H
-#define EVENTHORIZON_H
+//
+// Created by fcolaco on 08-07-2023.
+//
+
+#ifndef PROJETOCONTINENTE_EVENTHORIZON_H
+#define PROJETOCONTINENTE_EVENTHORIZON_H
 
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -17,12 +20,10 @@ typedef struct Event
 } EVENT;
 
 int compareTimes(void *data, void *data2);
-CLIENT *checkIfClientExists(struct List *eventHorizon, CLIENT *client);
-EVENT *findEventByClientId(struct List *eventHorizon, int id);
-struct List *createEventHorizon(struct List *clientList, int performanceMode);
+CLIENT *checkIfClientExists(struct List *eventHorizon, int id);
+struct List *createEventHorizon(struct List *clientList);
 void addSingleClient(struct List *eventHorizon, struct List *productList, struct List *clientList, int arrivalTime);
 void writeLineToTxt(char line[]);
 void printEvent(EVENT *event);
-int averageTimeInQueue(struct List *eventHorizon);
 
-#endif
+#endif //PROJETOCONTINENTE_EVENTHORIZON_H

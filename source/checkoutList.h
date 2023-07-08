@@ -5,7 +5,7 @@
 #include "employee.h"
 
 struct List *createCheckoutList();
-int compareCheckout(struct List *list);
+int compareCheckout(void *data, void *data2);
 void openCheckout(struct List *checkoutList, struct List *employeeList);
 int closeCheckout(struct List *checkoutList, struct Checkout *checkout);
 CHECKOUT *checkoutWithLeastClients(struct List *checkoutList);

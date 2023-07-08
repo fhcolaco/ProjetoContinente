@@ -43,25 +43,17 @@ void removeServingClient(CHECKOUT *checkout)
 
 CHECKOUT *chooseCheckout(struct List *checkoutList, struct Client *client)
 {
-    struct Node *current = checkoutList->head;
-    CHECKOUT *checkout = current->data;
-    while (current && checkoutList->size > 1)
+    struct List *aux = copyList(checkoutList);
+    CHECKOUT *checkout = aux->head->data;
+    while (aux->head != NULL)
     {
-        struct Node *currentQ = ((CHECKOUT *)current->data)->queue->head;
-        while (currentQ)
+        if (((CHECKOUT *)aux->head->data)->queue->size < checkout->queue->size && ((CHECKOUT *)aux->head->data)->closing == 0)
         {
-            if (((CLIENT *)currentQ->data)->id == client->id)
-            {
-                checkout = current->data;
-                return NULL;
-            }
-            currentQ = currentQ->next;
+            checkout = aux->head->data;
         }
-        if (((CHECKOUT *)current->data)->queue->size < checkout->queue->size)
-            if (((CHECKOUT *)current->data)->closing == 0)
-                checkout = current->data;
-        current = current->next;
+        nextNode(aux);
     }
+    free(aux);
     return checkout;
 }
 
