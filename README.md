@@ -25,5 +25,5 @@ make
 
 ## Contribuir
 
-Pulls são bem-vindos. Para grandes mudanças, abra um 'issue' primeiro para discutir o que você gostaria de mudar.
+Pulls são bem-vindos. Para grandes mudanças, abra um 'issue' primeiro para discutir o que gostaria de mudar.
 Certificar-se de inserir testes conforme apropriado.
