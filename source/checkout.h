@@ -1,8 +1,9 @@
 #ifndef CHECKOUT_H
 #define CHECKOUT_H
 
-#include "clients.h"
 #include "employee.h"
+#include "clients.h"
+#include "genericList.h"
 
 typedef struct Checkout
 {
@@ -16,10 +17,10 @@ typedef struct Checkout
 CHECKOUT *createCheckout(int numCheckout, struct List *employeeList);
 void addToCheckoutQueue(CHECKOUT *checkout, CLIENT *client);
 void removeFromCheckoutQueue(CHECKOUT *checkout);
-int addServingClient(CHECKOUT *checkout);
+void addServingClient(CHECKOUT *checkout);
 void removeServingClient(CHECKOUT *checkout);
-CHECKOUT *chooseCheckout(struct List *checkoutList, CLIENT *client);
+CHECKOUT *chooseCheckout(struct List *checkoutList);
 CHECKOUT *findCheckout(struct List *checkoutList, CLIENT *client);
 CHECKOUT *findServingClient(struct List *checkoutList, CLIENT *client);
-CHECKOUT *findIfServingClient(struct List *checkoutList, CLIENT *client);
+
 #endif

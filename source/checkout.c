@@ -1,4 +1,5 @@
 #include "checkout.h"
+#include "employee.h"
 
 CHECKOUT *createCheckout(int numCheckout, struct List *employeeList)
 {
@@ -26,14 +27,16 @@ void removeFromCheckoutQueue(CHECKOUT *checkout)
     }
 }
 
-int addServingClient(CHECKOUT *checkout)
+void addServingClient(CHECKOUT *checkout)
 {
     if (checkout->servingClient == NULL)
     {
         checkout->servingClient = (CLIENT *)checkout->queue->head->data;
-        return 1;
     }
-    return 0;
+    else
+    {
+        exit(1);
+    }
 }
 
 void removeServingClient(CHECKOUT *checkout)
@@ -41,79 +44,60 @@ void removeServingClient(CHECKOUT *checkout)
     checkout->servingClient = NULL;
 }
 
-CHECKOUT *chooseCheckout(struct List *checkoutList, struct Client *client)
+CHECKOUT *chooseCheckout(struct List *checkoutList)
 {
-    struct List *aux = copyList(checkoutList);
-    CHECKOUT *checkout = aux->head->data;
-    while (aux->head != NULL)
+    struct Node *current = checkoutList->head;
+    CHECKOUT *checkout = current->data;
+    while (current && checkoutList->size > 1)
     {
-        if (((CHECKOUT *)aux->head->data)->queue->size < checkout->queue->size && ((CHECKOUT *)aux->head->data)->closing == 0)
+        if (((CHECKOUT *)current->data)->queue->size < checkout->queue->size)
         {
-            checkout = aux->head->data;
+
+            if (((CHECKOUT *)current->data)->closing == 0)
+                checkout = current->data;
         }
-        nextNode(aux);
+        current = current->next;
     }
-    free(aux);
     return checkout;
 }
 
 CHECKOUT *findCheckout(struct List *checkoutList, CLIENT *client)
 {
-    struct Node *current = checkoutList->head;
-    while (current)
+    struct List *aux = copyList(checkoutList);
+    for (int i = 0; i < aux->size; i++)
     {
-        struct Node *currentQueue = ((struct List *)((CHECKOUT *)current->data)->queue)->head;
-        while (currentQueue)
+        struct List *aux2 = copyList(((CHECKOUT *)aux->head->data)->queue);
+        for (int j = 0; j < aux2->size; j++)
         {
-            if (((CLIENT *)currentQueue->data)->id == client->id)
+            if (((CLIENT *)aux2->head->data)->id == client->id)
             {
-                CHECKOUT *checkout = current->data;
+                CHECKOUT *checkout = aux->head->data;
+                free(aux2);
+                free(aux);
                 return checkout;
             }
-            currentQueue = currentQueue->next;
+            aux2->head = aux2->head->next;
         }
-        current = current->next;
+        free(aux2);
+        aux->head = aux->head->next;
     }
+    free(aux);
     return NULL;
 }
 
 CHECKOUT *findServingClient(struct List *checkoutList, CLIENT *client)
 {
-    struct Node *current = checkoutList->head;
-    while (current)
+    struct List *aux = copyList(checkoutList);
+    for (int i = 0; i < aux->size; i++)
     {
-        if (((CHECKOUT *)current->data)->servingClient != NULL)
+        if (((CHECKOUT *)aux->head->data)->servingClient != NULL && ((CHECKOUT *)aux->head->data)->servingClient->id == client->id)
         {
-            if (((CHECKOUT *)current->data)->servingClient->id == client->id)
-            {
-                CHECKOUT *checkout = current->data;
-                return checkout;
-            }
+            CHECKOUT *checkout = aux->head->data;
+            free(aux);
+            return checkout;
         }
-        current = current->next;
+        aux->head = aux->head->next;
     }
-    current = checkoutList->head;
-    while (current)
-    {
-        current = current->next;
-    }
-    return NULL;
-}
-
-CHECKOUT *findIfServingClient(struct List *checkoutList, CLIENT *client)
-{
-    struct Node *current = checkoutList->head;
-    while (current)
-    {
-        if (((CHECKOUT *)current->data)->servingClient != NULL)
-        {
-            if (((CHECKOUT *)current->data)->servingClient->id == client->id)
-            {
-                CHECKOUT *checkout = current->data;
-                return checkout;
-            }
-        }
-        current = current->next;
-    }
+    free(aux);
     return NULL;
 }

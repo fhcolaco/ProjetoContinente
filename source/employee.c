@@ -1,5 +1,4 @@
 #include "employee.h"
-const int TOTAL_EMPLOYEES = 90;
 
 EMPLOYEE *createEmployee(int numMec, char *name)
 {
@@ -7,11 +6,10 @@ EMPLOYEE *createEmployee(int numMec, char *name)
     employee->numMec = numMec;
     strcpy(employee->name, name);
     employee->isWorking = false;
-    employee->clientsServed = 0;
     return employee;
 }
 
-struct List *createEmployeeList(int performanceMode)
+struct List *createEmployeeList()
 {
     struct List *employeeList = createList();
     FILE *file;
@@ -50,47 +48,45 @@ struct List *createEmployeeList(int performanceMode)
                 }
             }
             addToBackOfList(employeeList, createEmployee(numMec, name));
-            if (performanceMode != 1)
-                ("\33[0;32mEmployee list created: %d%%\r\33[0;97m", (int)((TOTAL_EMPLOYEES - (TOTAL_EMPLOYEES - employeeList->size)) * 100 / TOTAL_EMPLOYEES) + 1);
         }
     }
-    printf("\33[0;32mEmployee list created!                        \n\33[0;97m");
+    printf("\33[0;32mEmployee list created!\n\33[0;97m");
     fclose(file);
     return employeeList;
 }
 
 EMPLOYEE *chooseRandomEmployee(struct List *employeeList)
 {
-    int randomEmployee = rand() % (employeeList->size - 10);
+    // Creating a temporary list of available employees to then select one randomly
+    struct List *ListOfAvailableEmployees = createList();
     struct Node *current = employeeList->head;
-    for (int i = 0; i < randomEmployee; i++)
-    {
-        current = current->next;
-    }
-    while (current && ((EMPLOYEE *)current->data)->isWorking)
-    {
-        current = current->next;
-    }
-    if (current == NULL)
-    {
-        return NULL;
-    }
-    EMPLOYEE *employee = current->data;
-    ((EMPLOYEE *)current->data)->isWorking = true;
-    return employee;
-}
-
-EMPLOYEE *leastProductiveEmployee(struct List *employeeList)
-{
-    struct Node *current = employeeList->head;
-    EMPLOYEE *leastProductiveEmployee = (EMPLOYEE *)current->data;
     while (current)
     {
-        if (((EMPLOYEE *)current->data)->clientsServed < leastProductiveEmployee->clientsServed)
+        if (((EMPLOYEE *)current->data)->isWorking == false)
         {
-            leastProductiveEmployee = (EMPLOYEE *)current->data;
+            if (ListOfAvailableEmployees->head == NULL)
+            {
+                ListOfAvailableEmployees->head = current;
+                ListOfAvailableEmployees->tail = current;
+            }
+            else
+            {
+                ListOfAvailableEmployees->tail->next = current;
+                ListOfAvailableEmployees->tail = current;
+            }
+            ListOfAvailableEmployees->size++;
         }
         current = current->next;
     }
-    return leastProductiveEmployee;
+
+    // Selecting a random employee from the temporary list
+    int random = rand() % ListOfAvailableEmployees->size;
+    current = ListOfAvailableEmployees->head;
+    for (int i = 0; i < random; i++)
+    {
+        current = current->next;
+    }
+    ((EMPLOYEE *)current->data)->isWorking = true;
+    free(ListOfAvailableEmployees);
+    return (EMPLOYEE *)current->data;
 }

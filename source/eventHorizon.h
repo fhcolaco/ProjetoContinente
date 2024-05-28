@@ -1,9 +1,5 @@
-//
-// Created by fcolaco on 08-07-2023.
-//
-
-#ifndef PROJETOCONTINENTE_EVENTHORIZON_H
-#define PROJETOCONTINENTE_EVENTHORIZON_H
+#ifndef EVENTHORIZON_H
+#define EVENTHORIZON_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,11 +15,11 @@ typedef struct Event
     unsigned int time; // 0 to 43200 (OPEN 12 hours)
 } EVENT;
 
-int compareTimes(void *data, void *data2);
+int compareTimes(struct Event *data, struct Event *data2);
 CLIENT *checkIfClientExists(struct List *eventHorizon, int id);
 struct List *createEventHorizon(struct List *clientList);
 void addSingleClient(struct List *eventHorizon, struct List *productList, struct List *clientList, int arrivalTime);
 void writeLineToTxt(char line[]);
 void printEvent(EVENT *event);
 
-#endif //PROJETOCONTINENTE_EVENTHORIZON_H
+#endif

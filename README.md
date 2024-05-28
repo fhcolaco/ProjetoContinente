@@ -1,6 +1,6 @@
 # Simulação de Alocação de Funcionários em Hipermercados
 
-Este programa tem como objetivo otimizar a afetação de empregados às caixas de pagamento em uma cadeia de hipermercados. O objetivo é maximizar o tempo que os funcionários podem dedicar a outros serviços, ao mesmo tempo em que se mantém os tempos de espera e o tamanho das filas em níveis razoáveis. O programa utiliza o histórico das compras para simular o funcionamento de cada hipermercado e determinar a melhor forma de alocar os funcionários, minimizando o número de caixas abertas, mas mantendo o tempo de espera abaixo de um valor pré-definido.
+Este programa visa otimizar a afetação de empregados às caixas de pagamento numa cadeia de hipermercados. O objetivo é maximizar o tempo que os funcionários podem dedicar a outros serviços, em simultâneo, em que se mantém os tempos de espera e o tamanho das filas em níveis razoáveis. O programa utiliza o histórico das compras para simular o funcionamento de cada hipermercado e determinar a melhor forma de alocar os funcionários, minimizando o número de caixas abertas, mas mantendo o tempo de espera abaixo de um valor pré-definido.
 
 # Funcionalidades
 #### Simulação do funcionamento das caixas de um hipermercado com base em parâmetros de entrada.
@@ -9,17 +9,17 @@ Este programa tem como objetivo otimizar a afetação de empregados às caixas d
 - Número médio de caixas abertas;
 - Número médio de clientes no hipermercado;
 - Número médio de clientes na fila de cada caixa;
-- Número médio de clientes na fila em um determinado instante, entre outros.
+- Número médio de clientes na fila num determinado instante, entre outros.
 
 ## Como correr o programa
 
 Para correr o programa basta fazer:
 
-```python
-#Para compilar o programa
+```C
+//Para compilar o programa
 make
 
-#Para correr o programa
+//Para correr o programa
 ./continente
 ```
 
