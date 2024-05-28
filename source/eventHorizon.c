@@ -1,8 +1,10 @@
 #include "eventHorizon.h"
 
-int compareTimes(struct Event *data, struct Event *data2)
+int compareTimes(void *data, void *data2)
 {
-    if (data->time > data2->time)
+    EVENT *event = (EVENT *)data;
+    EVENT *event2 = (EVENT *)data2;
+    if (event->time > event2->time)
     {
         return 1;
     }
@@ -14,10 +16,25 @@ CLIENT *checkIfClientExists(struct List *eventHorizon, int id)
     struct Node *current = eventHorizon->head;
     for (int i = 0; i < eventHorizon->size; i++)
     {
-        struct Event *event = (struct Event *)current->data;
-        if (event->client->id == id)
+        struct Event *event = current->data;
+        if (((CLIENT *)event->client)->id == id)
         {
             return event->client;
+        }
+        current = current->next;
+    }
+    return NULL;
+}
+
+EVENT *findEventByClientId(struct List *eventHorizon, int id)
+{
+    struct Node *current = eventHorizon->head;
+    for (int i = 0; i < eventHorizon->size; i++)
+    {
+        struct Event *event = current->data;
+        if (((CLIENT *)event->client)->id == id)
+        {
+            return event;
         }
         current = current->next;
     }
@@ -33,33 +50,32 @@ struct List *createEventHorizon(struct List *clientList)
     int randomClient = 0;
     for (int i = numberOfClients; i != 0; i--)
     {
-        struct List *current = copyList(clientList);
-        randomClient = rand() % clientList->size;
+        struct Node *current = clientList->head;
+        randomClient = rand() % (clientList->size - 1);
         for (int j = 0; j < randomClient; j++)
         {
-            current->head = current->head->next;
+            current = current->next;
         }
-        while (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) != NULL)
+        while (checkIfClientExists(eventHorizon, ((struct Client *)current->data)->id) != NULL)
         {
-            if (current->head->next == NULL)
+            if (current->next == NULL)
             {
                 i++;
                 break;
             }
             else
             {
-                current->head = current->head->next;
+                current = current->next;
             }
         }
-        if (checkIfClientExists(eventHorizon, ((struct Client *)current->head->data)->id) == NULL)
+        if (checkIfClientExists(eventHorizon, ((struct Client *)current->data)->id) == NULL)
         {
             struct Event *arrival = (struct Event *)malloc(sizeof(struct Event));
             t = rand() % 43200;
-            arrival->client = (struct Client *)current->head->data;
+            arrival->client = (struct Client *)current->data;
             arrival->type = 0;
             arrival->time = t;
             addToMiddle(eventHorizon, arrival, *compareTimes);
-            free(current);
         }
     }
 
@@ -67,24 +83,17 @@ struct List *createEventHorizon(struct List *clientList)
     return eventHorizon;
 }
 
-void addSingleClient(struct List *eventHorizon, struct List *productList, struct List *clientList, int arrivalTime)
+void addSingleClient(struct List *eventHorizon, struct List *clientList, int arrivalTime)
 {
     struct Node *current = clientList->head;
-    int randomClient = rand() % clientList->size;
-    for (int j = 0; current && j < randomClient; j++)
+    int randomClient = rand() % (clientList->size - 1);
+    for (int j = 0; j < randomClient; j++)
     {
         current = current->next;
     }
-    while (current && checkIfClientExists(eventHorizon, ((struct Client *)current->data)->id) != NULL)
+    while (current->next && checkIfClientExists(eventHorizon, ((struct Client *)current->data)->id) != NULL)
     {
-        if (current->next == NULL)
-        {
-            break;
-        }
-        else
-        {
-            current = current->next;
-        }
+        current = current->next;
     }
     if (current && checkIfClientExists(eventHorizon, ((struct Client *)current->data)->id) == NULL)
     {
@@ -94,7 +103,6 @@ void addSingleClient(struct List *eventHorizon, struct List *productList, struct
         int time = arrivalTime + rand() % 300;
         arrival->time = time > 43200 ? arrivalTime : time;
         addToMiddle(eventHorizon, arrival, *compareTimes);
-        free(current);
     }
 }
 

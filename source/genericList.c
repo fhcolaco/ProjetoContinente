@@ -17,6 +17,7 @@ void addToMiddle(struct List *list, void *data, int (*compare)(void *, void *))
     new_node->next = NULL;
     new_node->previous = NULL;
     if (list->head == NULL)
+
     {
         list->head = new_node;
         list->tail = new_node;

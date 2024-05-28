@@ -15,7 +15,6 @@ struct Node
     struct Node *next;
     struct Node *previous;
 };
-
 struct List
 {
     struct Node *head;

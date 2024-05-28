@@ -11,12 +11,18 @@
 
 int main(void)
 {
-    int performanceMode = 1;
+    int performanceMode = 0;
+    printf("Run in performance mode ? (Y/N)\n");
+    char ch = getch();
+    if (ch == 'Y' || ch == 'y')
+    {
+        performanceMode = 1;
+    }
     srand(time(NULL));
     printf("Please wait while loading data...\n");
     struct List *productList = createProductList(performanceMode);
     struct List *clientList = createClientList(productList, performanceMode);
-    struct List *employeeList = createEmployeeList();
+    struct List *employeeList = createEmployeeList(performanceMode);
     struct List *eventHorizon = createEventHorizon(clientList);
     struct List *checkoutList = createCheckoutList();
 
@@ -34,11 +40,13 @@ int main(void)
     fprintf(txt, "Histórico de eventos:\n");
     fclose(txt);
     char sentence[100];
-    char ch;
     int numberOfClientsInStore = 0;
     int numberOfClientsServed = 0;
     int numberOfProcesEvents = 0;
+    int numberOfProductsSold = 0;
     float totalCash = 0;
+    int maxCheckouts = 9;
+    int checkoutStatisticMatrix[maxCheckouts - 1][1];
     while (eventHorizon->head != NULL)
     {
         EVENT *event = (EVENT *)eventHorizon->head->data;
@@ -99,10 +107,27 @@ int main(void)
                                             printf("O ID introduzido não é válido.\n");
                                             break;
                                         }
-                                        CLIENT *client = checkIfClientExists(eventHorizon, atoi(id));
-                                        if (client != NULL)
+                                        EVENT *event = findEventByClientId(eventHorizon, atoi(id));
+                                        if (event)
                                         {
-                                            printf("O cliente %d %s está na loja.\n", client->id, client->name);
+                                            printf("O cliente %d %s está na loja.\n", event->client->id, event->client->name);
+                                            // if (event->type == 0)
+                                            // {
+                                            //     printf("Está à procura de produtos.\n");
+                                            // }
+                                            // else if (event->type == 1)
+                                            // {
+
+                                            //     printf("Entrou na fila de espera.\n");
+                                            // }
+                                            // else if (event->type == 2)
+                                            // {
+                                            //     printf("Está a ser atendido na caixa %d.\n", findCheckout(checkoutList, ((CLIENT *)event->client)->id)->numCheckout);
+                                            // }
+                                            // else if (event->type == 3)
+                                            // {
+                                            //     printf("Está a pagar o que deve na caixa %d e vai abandonar a loja.\n", findCheckout(checkoutList, ((CLIENT *)event->client)->id)->numCheckout);
+                                            // }
                                         }
                                         else
                                         {
@@ -154,10 +179,38 @@ int main(void)
                                         printCheckoutList(checkoutList);
                                         break;
                                     case '2':
-                                        printf("Abrir uma caixa\n");
+                                        printf("A abrir uma caixa...\n");
+                                        if (checkoutList->size < 9)
+                                        {
+                                            openCheckout(checkoutList, employeeList);
+                                            printf("A caixa %d foi aberta.\n", ((CHECKOUT *)(checkoutList->tail->data))->numCheckout);
+                                        }
+                                        else
+                                        {
+                                            printf("\nNão é possível abrir uma caixa. Limite de caixas abertas foi atingido");
+                                        }
                                         break;
                                     case '3':
-                                        printf("Fechar uma caixa\n");
+                                        printf("Fechar uma caixa\nQual o número da caixa que pretende fechar? ");
+                                        int checkoutNumber;
+                                        scanf("%d", &checkoutNumber);
+                                        CHECKOUT *checkout = findCheckoutByNumCheckout(checkoutList, checkoutNumber);
+                                        if (checkout)
+                                        {
+                                            int result = closeCheckout(checkoutList, checkout);
+                                            if (result == 0)
+                                            {
+                                                printf("A caixa %d foi fechada.\n", checkoutNumber);
+                                            }
+                                            else
+                                            {
+                                                printf("A caixa %d tem clientes à espera. Foi dada a ordem de despejo\n", checkoutNumber);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            printf("A caixa %d não está aberta.\n", checkoutNumber);
+                                        }
                                         break;
                                     case '0':
                                         printf("A voltar ao menu anterior.\n");
@@ -181,14 +234,65 @@ int main(void)
                     {
                         ch = '\0';
                         printMenuInSimulationStatistics(checkoutList->size);
-                        while (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '0')
+                        while (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '3' && ch != '0')
                         {
                             if (kbhit)
                             {
                                 ch = getch();
-                                if (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '0')
+                                if (ch != 'q' && ch != 'Q' && ch != 'm' && ch != 'M' && ch != '1' && ch != '2' && ch != '3' && ch != '0')
                                 {
                                     printf("\nOpção inválida.\nPrima M para apresentar o menu.");
+                                }
+                                else
+                                {
+                                    switch (ch)
+                                    {
+                                    case '1':
+                                        printf("Estatísticas de Cliente\n");
+                                        printf("Número de clientes que entraram na loja: %d\n", numberOfClientsInStore);
+                                        printf("Número de clientes que saíram da loja: %d\n", numberOfClientsServed);
+                                        break;
+                                    case '2':
+                                        printf("Estatísticas de Caixa\n");
+                                        printf("Número de caixas abertas: %d\n", checkoutList->size);
+                                        // checkoutStatisticMatriz
+                                        int maxClientsServed = 0;
+                                        int indexCheckout_maxCientsServer = 0;
+                                        int maxProductsSold = 0;
+                                        int indexCheckout_maxProductsSold = 0;
+                                        for (int i = 0; i < maxCheckouts; i++)
+                                        {
+                                            for (int j = 0; j < 2; j++)
+                                            {
+                                                if (checkoutStatisticMatrix[i][j] > maxClientsServed)
+                                                {
+                                                    maxClientsServed = checkoutStatisticMatrix[i][j];
+                                                    indexCheckout_maxCientsServer = i;
+                                                }
+                                                if (checkoutStatisticMatrix[i][j] > maxProductsSold)
+                                                {
+                                                    maxProductsSold = checkoutStatisticMatrix[i][j];
+                                                    indexCheckout_maxProductsSold = i;
+                                                }
+                                            }
+                                        }
+
+                                        printf("Caixa que atendeu mais clientes: [Caixa %d]\n", indexCheckout_maxCientsServer + 1);
+                                        printf("Caixa que vendeu mais produtos: [Caixa %d]\n", indexCheckout_maxProductsSold + 1);
+                                        printf("Funcionario que atendeu menos clientes: [%s]\n", leastProductiveEmployee(employeeList)->name);
+                                        // printf("Tempo médio de espera na fila: %s\n", instanceToTime(averageTimeInQueue(eventHorizon)));
+                                        break;
+                                    case '3':
+                                        printf("Estatísticas de Loja\n");
+                                        printf("Total de produtos vendidos: %d\n", numberOfProductsSold);
+                                        printf("Total de ganhos: %.2f\n", totalCash);
+                                        break;
+                                    case '0':
+                                        printf("A voltar ao menu anterior.\n");
+                                        break;
+                                    default:
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -214,12 +318,30 @@ int main(void)
                                 {
                                     printf("\nOpção inválida.\nPrima M para apresentar o menu.");
                                 }
+                                else
+                                {
+                                    switch (ch)
+                                    {
+                                    case '1':
+                                        printf("Consultar evento atual da simulação\n");
+
+                                        break;
+                                    case '2':
+                                        printf("Consultar próximo evento da simulação\n");
+                                        break;
+                                    case '0':
+                                        printf("A voltar ao menu anterior.\n");
+                                        break;
+                                    default:
+                                        break;
+                                    }
+                                }
                             }
-                        }
-                        if (ch == 'q' || ch == 'Q')
-                        {
-                            printf("\nA voltar à simulação.\n");
-                            break;
+                            if (ch == 'q' || ch == 'Q')
+                            {
+                                printf("\nA voltar à simulação.\n");
+                                break;
+                            }
                         }
                     } while (ch != 'q' && ch != 'Q' && ch != '0');
                 }
@@ -321,7 +443,7 @@ int main(void)
         numberOfProcesEvents++;
         if (((EVENT *)eventHorizon->head->data)->time < 43200 && clientList->size != 0 && eventHorizon->size <= 25)
         {
-            addSingleClient(eventHorizon, productList, clientList, ((EVENT *)eventHorizon->head->data)->time);
+            addSingleClient(eventHorizon, clientList, ((EVENT *)eventHorizon->head->data)->time);
         }
         nextNode(eventHorizon);
         if (false) // Change to true to see the simulation in real time
